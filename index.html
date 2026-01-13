@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabungan Jimpitan</title>
+  
+  <!-- RESPONSIVE WAJIB -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- FAVICON STANDAR -->
+  <link rel="icon" href="assets/favicon.png">
+  
+  <!-- MANIFEST (nanti aktif penuh di tahap PWA) -->
+  <link rel="manifest" href="manifest.json">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f6f5;
+      margin: 0;
+      padding: 10px;
+      color: #333;
+    }
 
+    h1 {
+      text-align: center;
+      font-size: 20px;
+      margin: 10px 0 15px;
+      color: #2e7d32;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #2e7d32;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 500;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #1b5e20;
+    }
+
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .info {
+      font-size: 13px;
+      color: #555;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 4px;
+      background: #f9f9f9;
+    }
+    
+    .info.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .info.error {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>💰 TABUNGAN JIMPITAN</h1>
+    
+    <div class="box">
+      <label>ID Nasabah</label>
+      <input type="text" id="idNasabah" readonly>
+      
+      <label>Nama Nasabah</label>
+      <input type="text" id="namaNasabah" placeholder="Masukkan nama lengkap">
+      
+      <label>Tanggal Setor Dari</label>
+      <input type="date" id="tglDari">
+      
+      <label>Tanggal Setor Sampai</label>
+      <input type="date" id="tglSampai">
+      
+      <label>Nominal (Rp)</label>
+      <input type="number" id="nominal" placeholder="Contoh: 2000" min="0">
+      
+      <button id="btnSimpan" disabled>Simpan Data</button>
+      
+      <div class="info" id="infoStatus">
+        Lengkapi semua data untuk menyimpan
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DASAR -->
+  <script src="js/app.js"></script>
+</body>
+</html>
