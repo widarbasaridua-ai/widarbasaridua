@@ -1,1 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan - Tabungan Jimpitan</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .laporan-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+    
+    .laporan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .filter-section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .filter-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background: #2e7d32;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #1b5e20;
+    }
+    
+    .btn-secondary {
+      background: #757575;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #616161;
+    }
+    
+    .btn-print {
+      background: #1976d2;
+      color: white;
+    }
+    
+    .btn-print:hover {
+      background: #1565c0;
+    }
+    
+    .btn-back {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    
+    .btn-back:hover {
+      background: #e0e0e0;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .stat-card.large {
+      grid-column: span 2;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin: 10px 0;
+    }
+    
+    .stat-value.small {
+      font-size: 20px;
+    }
+    
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    
+    .trend-up {
+      color: #2e7d32;
+    }
+    
+    .trend-down {
+      color: #d32f2f;
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th {
+      background: #f5f5f5;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 500;
+      color: #555;
+      border-bottom: 1px solid #eee;
+    }
+    
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    tr:hover {
+      background: #f9f9f9;
+    }
+    
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .badge-success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .badge-pending {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+    
+    .chart-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .chart-placeholder {
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f9f9f9;
+      border-radius: 4px;
+      color: #999;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .page-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .page-btn.active {
+      background: #2e7d32;
+      color: white;
+      border-color: #2e7d32;
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    @media (max-width: 768px) {
+      .laporan-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stat-card.large {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="laporan-container">
+    <div class="laporan-header">
+      <h1>📊 LAPORAN & HISTORI TRANSAKSI</h1>
+      <div>
+        <button class="btn btn-print" onclick="window.print()">🖨️ Cetak Laporan</button>
+        <button class="btn btn-back" onclick="window.location.href='/'">⬅️ Kembali</button>
+      </div>
+    </div>
+    
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <h3>Filter Laporan</h3>
+      <div class="filter-grid">
+        <div>
+          <label>Tanggal Mulai</label>
+          <input type="date" id="filterStartDate" class="form-control">
+        </div>
+        <div>
+          <label>Tanggal Akhir</label>
+          <input type="date" id="filterEndDate" class="form-control">
+        </div>
+        <div>
+          <label>Nasabah</label>
+          <input type="text" id="filterNasabah" class="form-control" placeholder="Cari nasabah...">
+        </div>
+        <div>
+          <label>Jenis Transaksi</label>
+          <select id="filterJenis" class="form-control">
+            <option value="">Semua</option>
+            <option value="setoran">Setoran</option>
+            <option value="penarikan">Penarikan</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="loadLaporan()">🔍 Terapkan Filter</button>
+        <button class="btn btn-secondary" onclick="resetFilter()">🔄 Reset</button>
+        <button class="btn btn-print" onclick="exportToExcel()">📥 Export Excel</button>
+      </div>
+    </div>
+    
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Setoran (Periodik)</div>
+        <div class="stat-value" id="totalSetoran">Rp 0</div>
+        <div class="stat-trend">
+          <span id="setoranTrend">0%</span> dari periode sebelumnya
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Transaksi</div>
+        <div class="stat-value" id="totalTransaksi">0</div>
+        <div class="stat-trend">
+          <span id="transaksiTrend">0</span> transaksi/hari
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rata-rata Setoran</div>
+        <div class="stat-value" id="rataSetoran">Rp 0</div>
+        <div class="stat-trend">
+          Per nasabah: <span id="avgPerNasabah">Rp 0</span>
+        </div>
+      </div>
+      <div class="stat-card large">
+        <div class="stat-label">Top 5 Nasabah</div>
+        <div id="topNasabahList">
+          <div class="loading">Memuat data...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chart Section -->
+    <div class="chart-container">
+      <h3>Grafik Setoran 7 Hari Terakhir</h3>
+      <div class="chart-placeholder" id="chartContainer">
+        Chart akan ditampilkan di sini
+      </div>
+    </div>
+    
+    <!-- Transactions Table -->
+    <div class="table-container">
+      <h3 style="padding: 15px 15px 0; margin: 0">Histori Transaksi</h3>
+      <table id="transactionsTable">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Kode Transaksi</th>
+            <th>Nasabah</th>
+            <th>Periode</th>
+            <th>Nominal</th>
+            <th>Jenis</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="transactionsBody">
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 40px;">
+              <div class="loading">Memuat data transaksi...</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination" id="pagination">
+      <button class="page-btn" onclick="changePage(-1)" disabled>← Sebelumnya</button>
+      <span id="pageInfo">Halaman 1 dari 1</span>
+      <button class="page-btn" onclick="changePage(1)" disabled>Selanjutnya →</button>
+    </div>
+  </div>
 
+  <script src="../js/laporan.js"></script>
+</body>
+</html>
