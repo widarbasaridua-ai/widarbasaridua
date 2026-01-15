@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 JIMPITAN HARIAN - Tabungan Digital</title>
+    <title>💰 JIMPITAN HARIAN v6.0 - AUTO SYSTEM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -35,6 +35,1651 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .online-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .tab.active {
+            color: #1b5e20;
+            border-bottom-color: #1b5e20;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            font-size: 16px;
+            background: white;
+        }
+        
+        select:focus, input:focus {
+            border-color: #1b5e20;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            transition: 0.3s;
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
+        }
+        
+        .btn-drive {
+            background: linear-gradient(135deg, #0d904f 0%, #0f9d58 100%);
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1b5e20;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .nasabah-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .nasabah-id {
+            background: #1b5e20;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th {
+            background: #1b5e20;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .setor { color: #4caf50; font-weight: 600; }
+        .tarik { color: #f44336; font-weight: 600; }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .system-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            color: #1565c0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-online { background: #4caf50; }
+        .status-offline { background: #f44336; }
+        .status-syncing { background: #ff9800; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .log-container {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .log-time {
+            color: #666;
+            font-size: 0.7rem;
+        }
+        
+        .log-message {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-piggy-bank"></i>
+                JIMPITAN HARIAN
+                <span class="badge">v6.0 AUTO</span>
+            </h1>
+            <p>Aplikasi Tabungan Digital - Auto Spreadsheet & Backup</p>
+            <div class="online-status" id="onlineStatus">
+                <i class="fas fa-wifi"></i> ONLINE
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- System Info -->
+            <div class="system-info">
+                <i class="fas fa-cogs"></i>
+                <span id="systemText">System: Loading...</span>
+                <br>
+                <span class="status-indicator" id="driveStatus"></span>
+                <span id="driveText">Google Drive: Checking...</span>
+            </div>
+            
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+            
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <div class="tab active" onclick="switchTab('dashboard')">
+                    <i class="fas fa-home"></i> Dashboard
+                </div>
+                <div class="tab" onclick="switchTab('transaksi')">
+                    <i class="fas fa-exchange-alt"></i> Transaksi
+                </div>
+                <div class="tab" onclick="switchTab('nasabah')">
+                    <i class="fas fa-users"></i> Nasabah
+                </div>
+                <div class="tab" onclick="switchTab('riwayat')">
+                    <i class="fas fa-history"></i> Riwayat
+                </div>
+                <div class="tab" onclick="switchTab('system')">
+                    <i class="fas fa-cog"></i> System
+                </div>
+            </div>
+            
+            <!-- Dashboard Tab -->
+            <div id="tab-dashboard" class="tab-content active">
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-chart-line"></i> Statistik Real-time
+                    </h3>
+                    
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalNasabah">0</div>
+                            <div class="stat-label">Total Nasabah</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTransaksi">0</div>
+                            <div class="stat-label">Total Transaksi</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="saldoHariIni">Rp 0</div>
+                            <div class="stat-label">Setor Hari Ini</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="transaksiHariIni">0</div>
+                            <div class="stat-label">Transaksi Hari Ini</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #1b5e20; margin-top: 20px; margin-bottom: 10px;">
+                        <i class="fas fa-sync-alt"></i> Transaksi Terbaru
+                    </h4>
+                    <div id="liveTransaksi" style="max-height: 200px; overflow-y: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Nasabah</th>
+                                    <th>Nominal</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="liveTransaksiBody">
+                                <tr><td colspan="4" style="text-align: center; padding: 20px; color: #999;">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-telegram" onclick="backupToDrive()" style="flex: 1;">
+                            <i class="fas fa-cloud-upload-alt"></i> Backup Now
+                        </button>
+                        <button class="btn btn-drive" onclick="openSpreadsheet()" style="flex: 1;">
+                            <i class="fas fa-file-excel"></i> Open Sheet
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transaksi Tab -->
+            <div id="tab-transaksi" class="tab-content">
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-plus-circle"></i> Input Transaksi Baru
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Pilih Nasabah</label>
+                        <select id="selectNasabah" required>
+                            <option value="">Memuat daftar nasabah...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar"></i> Periode</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="date" id="tanggalDari" required style="flex: 1;">
+                            <span style="color: #666;">s.d</span>
+                            <input type="date" id="tanggalSampai" required style="flex: 1;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Nominal (Rp)</label>
+                        <input type="text" id="inputNominal" placeholder="50.000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-exchange-alt"></i> Jenis Transaksi</label>
+                        <select id="selectAksi" required>
+                            <option value="setor">Setor</option>
+                            <option value="tarik">Tarik</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" onclick="simpanTransaksi()" id="btnSimpan" style="flex: 2;">
+                            <i class="fas fa-save"></i> SIMPAN & SYNC
+                        </button>
+                        <button class="btn btn-telegram" onclick="kirimKeTelegram()" id="btnTelegram" style="flex: 1;">
+                            <i class="fab fa-telegram"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="previewTransaksi" style="margin-top: 20px; display: none;">
+                        <h4 style="color: #1b5e20;">Preview Transaksi:</h4>
+                        <div style="background: #e8f5e9; padding: 15px; border-radius: 10px; margin-top: 10px;">
+                            <p><strong>Nasabah:</strong> <span id="previewNama">-</span></p>
+                            <p><strong>Periode:</strong> <span id="previewPeriode">-</span></p>
+                            <p><strong>Nominal:</strong> <span id="previewNominal">-</span></p>
+                            <p><strong>Jenis:</strong> <span id="previewJenis">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nasabah Tab -->
+            <div id="tab-nasabah" class="tab-content">
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-user-plus"></i> Tambah Nasabah Baru
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> ID Nasabah (Auto)</label>
+                        <input type="text" id="inputIdNasabah" placeholder="001" readonly style="background: #f5f5f5;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nama Lengkap</label>
+                        <input type="text" id="inputNamaNasabah" placeholder="Masukkan nama nasabah">
+                    </div>
+                    
+                    <button class="btn" onclick="tambahNasabah()" id="btnTambahNasabah">
+                        <i class="fas fa-plus"></i> TAMBAH NASABAH
+                    </button>
+                    
+                    <h4 style="color: #1b5e20; margin-top: 25px; margin-bottom: 15px;">
+                        <i class="fas fa-list"></i> Daftar Nasabah (<span id="jumlahNasabah">0</span>)
+                    </h4>
+                    
+                    <div id="daftarNasabahContainer" style="max-height: 300px; overflow-y: auto;">
+                        <p style="text-align: center; color: #999; padding: 20px;">Memuat data nasabah...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Riwayat Tab -->
+            <div id="tab-riwayat" class="tab-content">
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-history"></i> Riwayat Transaksi
+                    </h3>
+                    
+                    <div class="form-group">
+                        <input type="text" id="searchRiwayat" placeholder="Cari transaksi..." 
+                               style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button class="btn" onclick="filterRiwayat('semua')" style="flex: 1;">
+                            Semua
+                        </button>
+                        <button class="btn" onclick="filterRiwayat('hari-ini')" style="flex: 1;">
+                            Hari Ini
+                        </button>
+                        <button class="btn" onclick="filterRiwayat('bulan-ini')" style="flex: 1;">
+                            Bulan Ini
+                        </button>
+                    </div>
+                    
+                    <div id="containerRiwayat" style="max-height: 400px; overflow-y: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>ID</th>
+                                    <th>Nasabah</th>
+                                    <th>Nominal</th>
+                                    <th>Jenis</th>
+                                    <th>Sync</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyRiwayat">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 30px; color: #999;">
+                                        Belum ada transaksi
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Tab -->
+            <div id="tab-system" class="tab-content">
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-cogs"></i> System Control
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-database"></i> Google Drive Folder ID</label>
+                        <input type="text" id="folderId" placeholder="1TZLls53YvlbVjQKD5L6KwrTZG3XS5xoB" 
+                               value="1TZLls53YvlbVjQKD5L6KwrTZG3XS5xoB">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-file-excel"></i> Spreadsheet Name</label>
+                        <input type="text" id="sheetName" placeholder="JIMPITAN_MASTER" value="JIMPITAN_MASTER">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <button class="btn" onclick="createDriveFolder()">
+                            <i class="fas fa-folder-plus"></i> Buat Folder
+                        </button>
+                        <button class="btn" onclick="createSpreadsheet()">
+                            <i class="fas fa-file-excel"></i> Buat Spreadsheet
+                        </button>
+                        <button class="btn" onclick="forceBackup()">
+                            <i class="fas fa-cloud-upload-alt"></i> Force Backup
+                        </button>
+                        <button class="btn" onclick="checkSystem()">
+                            <i class="fas fa-sync-alt"></i> Check System
+                        </button>
+                    </div>
+                    
+                    <h4 style="color: #1b5e20; margin-top: 20px; margin-bottom: 10px;">
+                        <i class="fas fa-terminal"></i> System Log
+                    </h4>
+                    <div class="log-container" id="systemLog">
+                        <div class="log-entry">
+                            <span class="log-time">[00:00:00]</span>
+                            <span class="log-message">System initialized...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Drive API -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    
+    <!-- Aplikasi JavaScript -->
+    <script>
+        // ==================== VARIABEL GLOBAL ====================
+        let semuaTransaksi = [];
+        let semuaNasabah = [];
+        let saldoNasabah = {};
+        let nextID = 1;
+        let gapiLoaded = false;
+        let driveFolderId = null;
+        let spreadsheetId = null;
+        let systemLog = [];
+        
+        // ==================== FUNGSI UTAMA ====================
+        
+        // Format Rupiah
+        function formatRupiah(angka) {
+            return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+        }
+        
+        // Format ID dengan 3 digit
+        function formatID(num) {
+            return num.toString().padStart(3, '0');
+        }
+        
+        // Tampilkan alert
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alertContainer');
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                    ${message}
+                </div>
+            `;
+            container.style.display = 'block';
+            
+            setTimeout(() => {
+                container.style.display = 'none';
+                container.innerHTML = '';
+            }, 3000);
+        }
+        
+        // Tampilkan loading di button
+        function showLoading(buttonId) {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.setAttribute('data-original', button.innerHTML);
+                button.innerHTML = '<span class="loading"></span>';
+                button.disabled = true;
+            }
+        }
+        
+        // Stop loading
+        function stopLoading(buttonId) {
+            const button = document.getElementById(buttonId);
+            if (button && button.getAttribute('data-original')) {
+                button.innerHTML = button.getAttribute('data-original');
+                button.disabled = false;
+            }
+        }
+        
+        // Tambah log system
+        function addLog(message) {
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0];
+            const logEntry = {
+                time: timeStr,
+                message: message,
+                timestamp: now.getTime()
+            };
+            
+            systemLog.unshift(logEntry);
+            if (systemLog.length > 50) systemLog.pop();
+            
+            // Update UI
+            updateLogDisplay();
+        }
+        
+        // Update log display
+        function updateLogDisplay() {
+            const container = document.getElementById('systemLog');
+            let html = '';
+            
+            systemLog.slice(0, 10).forEach(log => {
+                html += `
+                    <div class="log-entry">
+                        <span class="log-time">[${log.time}]</span>
+                        <span class="log-message">${log.message}</span>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Switch tab
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            } else if (tabName === 'nasabah') {
+                loadDaftarNasabahUI();
+            } else if (tabName === 'riwayat') {
+                loadRiwayat();
+            }
+        }
+        
+        // Update status online
+        function updateOnlineStatus() {
+            const status = document.getElementById('onlineStatus');
+            if (navigator.onLine) {
+                status.innerHTML = '<i class="fas fa-wifi"></i> ONLINE';
+                status.style.background = '#4caf50';
+            } else {
+                status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> OFFLINE';
+                status.style.background = '#f44336';
+                showAlert('Anda sedang offline', 'error');
+            }
+        }
+        
+        // ==================== GOOGLE DRIVE FUNCTIONS ====================
+        
+        // Load Google Drive API
+        function loadGAPI() {
+            return new Promise((resolve, reject) => {
+                if (gapiLoaded) {
+                    resolve();
+                    return;
+                }
+                
+                gapi.load('client', async () => {
+                    try {
+                        // Initialize with minimal scopes
+                        await gapi.client.init({
+                            apiKey: 'AIzaSyDIN1RTA_jRxTPCg5R-1LTLkPNj-H25BI4', // Public API key
+                            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+                        });
+                        
+                        gapiLoaded = true;
+                        addLog('Google Drive API loaded');
+                        resolve();
+                    } catch (error) {
+                        console.error('Error loading GAPI:', error);
+                        addLog('GAPI Error: ' + error.message);
+                        reject(error);
+                    }
+                });
+            });
+        }
+        
+        // Buat folder di Google Drive
+        async function createDriveFolder() {
+            try {
+                showLoading('btnTambahNasabah');
+                await loadGAPI();
+                
+                const folderName = document.getElementById('sheetName').value || 'JIMPITAN_HARIAN';
+                const parentId = document.getElementById('folderId').value || 'root';
+                
+                addLog(`Creating folder: ${folderName}`);
+                
+                const response = await gapi.client.drive.files.create({
+                    resource: {
+                        name: folderName,
+                        mimeType: 'application/vnd.google-apps.folder',
+                        parents: parentId ? [parentId] : []
+                    },
+                    fields: 'id, name, webViewLink'
+                });
+                
+                const folder = response.result;
+                driveFolderId = folder.id;
+                
+                addLog(`Folder created: ${folder.name} (ID: ${folder.id})`);
+                showAlert(`Folder berhasil dibuat: ${folder.name}`, 'success');
+                
+                // Simpan folder ID ke localStorage
+                localStorage.setItem('jimpitan_folder_id', folder.id);
+                
+                // Update system info
+                updateSystemInfo();
+                
+                return folder;
+                
+            } catch (error) {
+                console.error('Error creating folder:', error);
+                addLog('Folder Error: ' + error.message);
+                showAlert('Gagal membuat folder: ' + error.message, 'error');
+                return null;
+            } finally {
+                stopLoading('btnTambahNasabah');
+            }
+        }
+        
+        // Buat spreadsheet baru
+        async function createSpreadsheet() {
+            try {
+                showLoading('btnSimpan');
+                await loadGAPI();
+                
+                const sheetName = document.getElementById('sheetName').value || 'JIMPITAN_MASTER';
+                const parentId = driveFolderId || document.getElementById('folderId').value;
+                
+                addLog(`Creating spreadsheet: ${sheetName}`);
+                
+                const response = await gapi.client.drive.files.create({
+                    resource: {
+                        name: sheetName,
+                        mimeType: 'application/vnd.google-apps.spreadsheet',
+                        parents: parentId ? [parentId] : []
+                    },
+                    fields: 'id, name, webViewLink'
+                });
+                
+                const spreadsheet = response.result;
+                spreadsheetId = spreadsheet.id;
+                
+                addLog(`Spreadsheet created: ${spreadsheet.name} (ID: ${spreadsheet.id})`);
+                showAlert(`Spreadsheet berhasil dibuat: ${spreadsheet.name}`, 'success');
+                
+                // Simpan spreadsheet ID ke localStorage
+                localStorage.setItem('jimpitan_spreadsheet_id', spreadsheet.id);
+                
+                // Update system info
+                updateSystemInfo();
+                
+                // Buka spreadsheet
+                openSpreadsheet();
+                
+                return spreadsheet;
+                
+            } catch (error) {
+                console.error('Error creating spreadsheet:', error);
+                addLog('Spreadsheet Error: ' + error.message);
+                showAlert('Gagal membuat spreadsheet: ' + error.message, 'error');
+                return null;
+            } finally {
+                stopLoading('btnSimpan');
+            }
+        }
+        
+        // Backup data ke Google Drive
+        async function backupToDrive() {
+            try {
+                if (!gapiLoaded) {
+                    await loadGAPI();
+                }
+                
+                // Ambil data dari localStorage
+                const nasabah = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]');
+                const transaksi = JSON.parse(localStorage.getItem('transaksi_jimpitan') || '[]');
+                
+                // Buat nama file
+                const now = new Date();
+                const dateStr = now.toISOString().split('T')[0];
+                const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-');
+                const fileName = `JIMPITAN_BACKUP_${dateStr}_${timeStr}.json`;
+                
+                // Data untuk backup
+                const backupData = {
+                    backup_date: now.toISOString(),
+                    app_name: 'Jimpitan Harian v6.0',
+                    data: {
+                        nasabah: nasabah,
+                        transaksi: transaksi
+                    },
+                    summary: {
+                        total_nasabah: nasabah.length,
+                        total_transaksi: transaksi.length,
+                        backup_size: JSON.stringify({nasabah, transaksi}).length
+                    }
+                };
+                
+                // Convert ke JSON
+                const fileContent = JSON.stringify(backupData, null, 2);
+                
+                addLog(`Creating backup: ${fileName}`);
+                
+                // Cari atau buat folder
+                let folderId = driveFolderId || localStorage.getItem('jimpitan_folder_id');
+                if (!folderId) {
+                    const folder = await createDriveFolder();
+                    if (folder) {
+                        folderId = folder.id;
+                    } else {
+                        folderId = 'root';
+                    }
+                }
+                
+                // Buat file di Google Drive
+                const response = await gapi.client.drive.files.create({
+                    resource: {
+                        name: fileName,
+                        mimeType: 'application/json',
+                        parents: folderId ? [folderId] : []
+                    },
+                    media: {
+                        mimeType: 'application/json',
+                        body: fileContent
+                    },
+                    fields: 'id, name, webViewLink'
+                });
+                
+                const file = response.result;
+                
+                addLog(`Backup created: ${file.name} (${backupData.summary.total_nasabah} nasabah, ${backupData.summary.total_transaksi} transaksi)`);
+                showAlert(`Backup berhasil: ${file.name}`, 'success');
+                
+                // Update last backup time
+                localStorage.setItem('last_backup_time', now.getTime());
+                
+                // Update dashboard
+                updateDashboard();
+                
+                return file;
+                
+            } catch (error) {
+                console.error('Error creating backup:', error);
+                addLog('Backup Error: ' + error.message);
+                showAlert('Gagal membuat backup: ' + error.message, 'error');
+                return null;
+            }
+        }
+        
+        // Tambah data ke spreadsheet
+        async function addToSpreadsheet(data, sheetName = 'Transaksi') {
+            try {
+                if (!spreadsheetId) {
+                    spreadsheetId = localStorage.getItem('jimpitan_spreadsheet_id');
+                    if (!spreadsheetId) {
+                        addLog('No spreadsheet found, creating new one...');
+                        const sheet = await createSpreadsheet();
+                        if (!sheet) return null;
+                        spreadsheetId = sheet.id;
+                    }
+                }
+                
+                // Untuk simplicity, kita simpan sebagai file JSON di Drive
+                // (Spreadsheet API lebih kompleks butuh OAuth)
+                const now = new Date();
+                const fileName = `${sheetName}_${now.toISOString().split('T')[0]}.json`;
+                const fileContent = JSON.stringify(data, null, 2);
+                
+                addLog(`Adding data to ${sheetName}: ${fileName}`);
+                
+                const response = await gapi.client.drive.files.create({
+                    resource: {
+                        name: fileName,
+                        mimeType: 'application/json',
+                        parents: [driveFolderId || 'root']
+                    },
+                    media: {
+                        mimeType: 'application/json',
+                        body: fileContent
+                    }
+                });
+                
+                addLog(`Data saved to ${fileName}`);
+                return response.result;
+                
+            } catch (error) {
+                console.error('Error adding to spreadsheet:', error);
+                addLog('Spreadsheet Add Error: ' + error.message);
+                return null;
+            }
+        }
+        
+        // Buka spreadsheet di tab baru
+        function openSpreadsheet() {
+            if (spreadsheetId) {
+                window.open(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`, '_blank');
+            } else {
+                showAlert('Spreadsheet belum dibuat', 'error');
+            }
+        }
+        
+        // Force backup (manual)
+        async function forceBackup() {
+            addLog('Manual backup triggered');
+            await backupToDrive();
+        }
+        
+        // Check system status
+        async function checkSystem() {
+            addLog('System check started');
+            
+            // Update system info
+            updateSystemInfo();
+            
+            // Cek localStorage
+            const nasabahCount = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]').length;
+            const transaksiCount = JSON.parse(localStorage.getItem('transaksi_jimpitan') || '[]').length;
+            
+            addLog(`Local data: ${nasabahCount} nasabah, ${transaksiCount} transaksi`);
+            
+            // Cek Google Drive access
+            try {
+                await loadGAPI();
+                const response = await gapi.client.drive.about.get({
+                    fields: 'user,storageQuota'
+                });
+                
+                const about = response.result;
+                addLog(`Drive user: ${about.user.displayName}`);
+                addLog(`Drive storage: ${Math.round(about.storageQuota.usage / 1024 / 1024)}MB used`);
+                
+                showAlert('System check completed', 'success');
+            } catch (error) {
+                addLog('Drive check failed: ' + error.message);
+                showAlert('Google Drive tidak bisa diakses', 'error');
+            }
+        }
+        
+        // Update system info display
+        function updateSystemInfo() {
+            const systemText = document.getElementById('systemText');
+            const driveStatus = document.getElementById('driveStatus');
+            const driveText = document.getElementById('driveText');
+            
+            // Cek localStorage
+            const nasabahCount = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]').length;
+            const transaksiCount = JSON.parse(localStorage.getItem('transaksi_jimpitan') || '[]').length;
+            
+            systemText.innerHTML = `System: ${nasabahCount} Nasabah, ${transaksiCount} Transaksi`;
+            
+            // Cek Google Drive
+            const folderId = localStorage.getItem('jimpitan_folder_id');
+            const sheetId = localStorage.getItem('jimpitan_spreadsheet_id');
+            
+            if (folderId && sheetId) {
+                driveStatus.className = 'status-indicator status-online';
+                driveText.innerHTML = 'Google Drive: Connected ✓';
+            } else if (gapiLoaded) {
+                driveStatus.className = 'status-indicator status-syncing';
+                driveText.innerHTML = 'Google Drive: Ready';
+            } else {
+                driveStatus.className = 'status-indicator status-offline';
+                driveText.innerHTML = 'Google Drive: Not connected';
+            }
+        }
+        
+        // ==================== FUNGSI DATA NASABAH ====================
+        
+        // Load nasabah dari GitHub
+        async function loadNasabahFromGitHub() {
+            try {
+                showLoading('btnTambahNasabah');
+                
+                const url = window.CONFIG?.NASABAH_URL || 
+                           'https://raw.githubusercontent.com/widarbasaridua-ai/widarbasaridua/main/nasabah.txt';
+                
+                const response = await fetch(url);
+                const text = await response.text();
+                const names = text.split('\n')
+                    .map(n => n.trim())
+                    .filter(n => n && n !== '');
+                
+                // Load nasabah dari localStorage
+                const localNasabah = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]');
+                
+                // Gabungkan data
+                semuaNasabah = [];
+                const allNames = [...new Set([...names, ...localNasabah.map(n => n.nama)])];
+                
+                allNames.forEach((nama, index) => {
+                    const localData = localNasabah.find(n => n.nama === nama);
+                    semuaNasabah.push({
+                        id: localData ? localData.id : formatID(index + 1),
+                        nama: nama,
+                        tanggal_daftar: localData ? localData.tanggal_daftar : new Date().toISOString().split('T')[0]
+                    });
+                });
+                
+                // Update next ID
+                const maxID = Math.max(...semuaNasabah.map(n => parseInt(n.id)), 0);
+                nextID = maxID + 1;
+                document.getElementById('inputIdNasabah').value = formatID(nextID);
+                
+                // Simpan ke localStorage
+                localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                
+                // Update UI
+                updateDropdownNasabah();
+                updateDashboard();
+                
+                addLog(`Loaded ${semuaNasabah.length} nasabah from GitHub`);
+                showAlert('Data nasabah berhasil dimuat', 'success');
+                
+            } catch (error) {
+                console.error('Error loading nasabah:', error);
+                addLog('GitHub Load Error: ' + error.message);
+                showAlert('Gagal memuat data nasabah', 'error');
+            } finally {
+                stopLoading('btnTambahNasabah');
+            }
+        }
+        
+        // Update dropdown nasabah
+        function updateDropdownNasabah() {
+            const select = document.getElementById('selectNasabah');
+            select.innerHTML = '<option value="">Pilih Nasabah...</option>';
+            
+            semuaNasabah.forEach(nasabah => {
+                const option = document.createElement('option');
+                option.value = nasabah.id;
+                option.textContent = `[${nasabah.id}] ${nasabah.nama}`;
+                option.dataset.nama = nasabah.nama;
+                select.appendChild(option);
+            });
+            
+            // Event untuk preview
+            select.addEventListener('change', updatePreviewTransaksi);
+        }
+        
+        // Tambah nasabah baru
+        async function tambahNasabah() {
+            const nama = document.getElementById('inputNamaNasabah').value.trim();
+            
+            if (!nama) {
+                showAlert('Masukkan nama nasabah', 'error');
+                return;
+            }
+            
+            // Cek duplikat
+            if (semuaNasabah.some(n => n.nama.toLowerCase() === nama.toLowerCase())) {
+                showAlert('Nasabah sudah terdaftar', 'error');
+                return;
+            }
+            
+            showLoading('btnTambahNasabah');
+            
+            try {
+                // Tambah nasabah
+                const idBaru = formatID(nextID);
+                const nasabahBaru = {
+                    id: idBaru,
+                    nama: nama,
+                    tanggal_daftar: new Date().toISOString().split('T')[0]
+                };
+                
+                semuaNasabah.push(nasabahBaru);
+                nextID++;
+                
+                // Simpan ke localStorage
+                localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                
+                // Update UI
+                document.getElementById('inputIdNasabah').value = formatID(nextID);
+                document.getElementById('inputNamaNasabah').value = '';
+                updateDropdownNasabah();
+                loadDaftarNasabahUI();
+                updateDashboard();
+                
+                addLog(`Nasabah added: ${nama} (ID: ${idBaru})`);
+                showAlert(`Nasabah "${nama}" ditambahkan (ID: ${idBaru})`, 'success');
+                
+                // Auto backup ke Drive
+                if (gapiLoaded) {
+                    setTimeout(async () => {
+                        await addToSpreadsheet([nasabahBaru], 'Nasabah');
+                    }, 1000);
+                }
+                
+            } catch (error) {
+                addLog('Add Nasabah Error: ' + error.message);
+                showAlert('Gagal menambah nasabah', 'error');
+            } finally {
+                stopLoading('btnTambahNasabah');
+            }
+        }
+        
+        // Load daftar nasabah UI
+        function loadDaftarNasabahUI() {
+            const container = document.getElementById('daftarNasabahContainer');
+            const jumlahElement = document.getElementById('jumlahNasabah');
+            
+            if (semuaNasabah.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Belum ada nasabah</p>';
+                jumlahElement.textContent = '0';
+                return;
+            }
+            
+            let html = '';
+            semuaNasabah.forEach(nasabah => {
+                html += `
+                    <div class="nasabah-item">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="nasabah-id">${nasabah.id}</span>
+                            <div>
+                                <div style="font-weight: 500;">${nasabah.nama}</div>
+                                <small style="color: #666;">Daftar: ${nasabah.tanggal_daftar}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            jumlahElement.textContent = semuaNasabah.length;
+        }
+        
+        // ==================== FUNGSI TRANSAKSI ====================
+        
+        // Update preview transaksi
+        function updatePreviewTransaksi() {
+            const select = document.getElementById('selectNasabah');
+            const selected = select.options[select.selectedIndex];
+            const dari = document.getElementById('tanggalDari').value;
+            const sampai = document.getElementById('tanggalSampai').value;
+            const nominal = document.getElementById('inputNominal').value;
+            const aksi = document.getElementById('selectAksi').value;
+            
+            if (selected && selected.value && dari && sampai && nominal) {
+                document.getElementById('previewNama').textContent = selected.dataset.nama;
+                document.getElementById('previewPeriode').textContent = `${dari} s.d ${sampai}`;
+                document.getElementById('previewNominal').textContent = formatRupiah(nominal.replace(/\./g, ''));
+                document.getElementById('previewJenis').textContent = aksi === 'setor' ? 'SETOR 💚' : 'TARIK ❤️';
+                document.getElementById('previewTransaksi').style.display = 'block';
+            } else {
+                document.getElementById('previewTransaksi').style.display = 'none';
+            }
+        }
+        
+        // Simpan transaksi
+        async function simpanTransaksi() {
+            const select = document.getElementById('selectNasabah');
+            const selected = select.options[select.selectedIndex];
+            
+            if (!selected || !selected.value) {
+                showAlert('Pilih nasabah terlebih dahulu', 'error');
+                return;
+            }
+            
+            const idNasabah = selected.value;
+            const namaNasabah = selected.dataset.nama;
+            const tanggalDari = document.getElementById('tanggalDari').value;
+            const tanggalSampai = document.getElementById('tanggalSampai').value;
+            const nominalInput = document.getElementById('inputNominal').value;
+            const aksi = document.getElementById('selectAksi').value;
+            
+            if (!tanggalDari || !tanggalSampai || !nominalInput) {
+                showAlert('Lengkapi semua data', 'error');
+                return;
+            }
+            
+            const nominal = parseInt(nominalInput.replace(/\./g, ''));
+            if (isNaN(nominal) || nominal <= 0) {
+                showAlert('Nominal tidak valid', 'error');
+                return;
+            }
+            
+            showLoading('btnSimpan');
+            
+            try {
+                // Buat transaksi
+                const transaksiBaru = {
+                    id: `TRX${Date.now()}`,
+                    nasabah_id: idNasabah,
+                    nama: namaNasabah,
+                    tanggal: new Date().toISOString().split('T')[0],
+                    periode: `${tanggalDari} s.d ${tanggalSampai}`,
+                    nominal: nominal,
+                    aksi: aksi,
+                    waktu: new Date().toISOString(),
+                    synced: false
+                };
+                
+                // Simpan ke localStorage
+                semuaTransaksi.push(transaksiBaru);
+                localStorage.setItem('transaksi_jimpitan', JSON.stringify(semuaTransaksi));
+                
+                // Update saldo
+                if (!saldoNasabah[namaNasabah]) {
+                    saldoNasabah[namaNasabah] = 0;
+                }
+                
+                if (aksi === 'setor') {
+                    saldoNasabah[namaNasabah] += nominal;
+                } else {
+                    saldoNasabah[namaNasabah] -= nominal;
+                }
+                
+                // Reset form
+                document.getElementById('inputNominal').value = '';
+                document.getElementById('previewTransaksi').style.display = 'none';
+                
+                addLog(`Transaksi saved: ${namaNasabah} - ${formatRupiah(nominal)} (${aksi})`);
+                showAlert('Transaksi berhasil disimpan', 'success');
+                
+                // Update UI
+                updateDashboard();
+                loadRiwayat();
+                
+                // Auto sync ke Google Drive
+                if (gapiLoaded) {
+                    transaksiBaru.synced = true;
+                    
+                    // Simpan ke Drive
+                    await addToSpreadsheet([transaksiBaru], 'Transaksi');
+                    addLog('Transaksi synced to Google Drive');
+                    
+                    // Update UI untuk tampilkan status sync
+                    transaksiBaru.synced = true;
+                    localStorage.setItem('transaksi_jimpitan', JSON.stringify(semuaTransaksi));
+                    loadRiwayat();
+                }
+                
+                // Kirim ke Telegram jika config ada
+                if (window.CONFIG?.BOT_TOKEN) {
+                    setTimeout(() => {
+                        kirimKeTelegram();
+                    }, 1000);
+                }
+                
+            } catch (error) {
+                addLog('Save Transaksi Error: ' + error.message);
+                showAlert('Gagal menyimpan transaksi', 'error');
+            } finally {
+                stopLoading('btnSimpan');
+            }
+        }
+        
+        // Kirim ke Telegram
+        async function kirimKeTelegram() {
+            const select = document.getElementById('selectNasabah');
+            const selected = select.options[select.selectedIndex];
+            
+            if (!selected || !selected.value) {
+                showAlert('Pilih nasabah terlebih dahulu', 'error');
+                return;
+            }
+            
+            if (!window.CONFIG?.BOT_TOKEN) {
+                showAlert('Token Telegram tidak ditemukan', 'error');
+                return;
+            }
+            
+            showLoading('btnTelegram');
+            
+            try {
+                const idNasabah = selected.value;
+                const namaNasabah = selected.dataset.nama;
+                const tanggalDari = document.getElementById('tanggalDari').value;
+                const tanggalSampai = document.getElementById('tanggalSampai').value;
+                const nominal = document.getElementById('inputNominal').value.replace(/\./g, '');
+                const aksi = document.getElementById('selectAksi').value;
+                
+                // Buat konten untuk Telegram
+                const content = `
+📊 TRANSAKSI JIMPITAN HARIAN v6.0
+══════════════════════════
+👤 NASABAH: ${namaNasabah}
+🆔 ID: ${idNasabah}
+📅 PERIODE: ${tanggalDari} s.d ${tanggalSampai}
+💰 NOMINAL: Rp ${parseInt(nominal).toLocaleString('id-ID')}
+⚡ JENIS: ${aksi.toUpperCase()}
+══════════════════════════
+⏰ WAKTU: ${new Date().toLocaleString('id-ID')}
+☁️ STATUS: SYNCED TO GOOGLE DRIVE
+✅ BACKUP: OTOMATIS
+                `;
+                
+                const fileName = `${idNasabah}_${aksi}_${new Date().toISOString().split('T')[0]}.txt`;
+                
+                // Kirim menggunakan fungsi dari config.js
+                if (window.sendToTelegram) {
+                    const success = await window.sendToTelegram(content, fileName);
+                    if (success) {
+                        addLog('Telegram sent: ' + fileName);
+                        showAlert('Berhasil dikirim ke Telegram', 'success');
+                    } else {
+                        showAlert('Gagal mengirim ke Telegram', 'error');
+                    }
+                }
+                
+            } catch (error) {
+                addLog('Telegram Error: ' + error.message);
+                showAlert('Error mengirim ke Telegram', 'error');
+            } finally {
+                stopLoading('btnTelegram');
+            }
+        }
+        
+        // ==================== FUNGSI DASHBOARD ====================
+        
+        // Update dashboard
+        function updateDashboard() {
+            // Update statistik
+            document.getElementById('totalNasabah').textContent = semuaNasabah.length;
+            document.getElementById('totalTransaksi').textContent = semuaTransaksi.length;
+            
+            // Hitung setor hari ini
+            const today = new Date().toISOString().split('T')[0];
+            const transaksiHariIni = semuaTransaksi.filter(t => t.tanggal === today);
+            const setorHariIni = transaksiHariIni
+                .filter(t => t.aksi === 'setor')
+                .reduce((sum, t) => sum + t.nominal, 0);
+            
+            document.getElementById('saldoHariIni').textContent = formatRupiah(setorHariIni);
+            document.getElementById('transaksiHariIni').textContent = transaksiHariIni.length;
+            
+            // Update transaksi terbaru
+            updateLiveTransaksi();
+            
+            // Update system info
+            updateSystemInfo();
+        }
+        
+        // Update live transaksi
+        function updateLiveTransaksi() {
+            const tbody = document.getElementById('liveTransaksiBody');
+            
+            if (semuaTransaksi.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
+                            Belum ada transaksi
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Ambil 5 transaksi terbaru
+            const latestTransaksi = [...semuaTransaksi]
+                .sort((a, b) => new Date(b.waktu) - new Date(a.waktu))
+                .slice(0, 5);
+            
+            let html = '';
+            latestTransaksi.forEach(trans => {
+                const syncIcon = trans.synced ? '✓' : '↻';
+                const syncColor = trans.synced ? '#4caf50' : '#ff9800';
+                html += `
+                    <tr>
+                        <td>${trans.tanggal}</td>
+                        <td>${trans.nama}</td>
+                        <td class="${trans.aksi}">${formatRupiah(trans.nominal)}</td>
+                        <td style="color: ${syncColor}; font-weight: bold;">${syncIcon}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        // ==================== FUNGSI RIWAYAT ====================
+        
+        // Load riwayat
+        function loadRiwayat(filter = 'semua') {
+            let transaksiTampil = [...semuaTransaksi];
+            
+            if (filter === 'hari-ini') {
+                const today = new Date().toISOString().split('T')[0];
+                transaksiTampil = transaksiTampil.filter(t => t.tanggal === today);
+            } else if (filter === 'bulan-ini') {
+                const thisMonth = new Date().toISOString().substring(0, 7);
+                transaksiTampil = transaksiTampil.filter(t => t.tanggal.substring(0, 7) === thisMonth);
+            }
+            
+            // Sort terbaru dulu
+            transaksiTampil.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
+            
+            const tbody = document.getElementById('tbodyRiwayat');
+            
+            if (transaksiTampil.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: #999;">
+                            Tidak ada transaksi
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            transaksiTampil.forEach(trans => {
+                const syncIcon = trans.synced ? '✓' : '↻';
+                const syncColor = trans.synced ? '#4caf50' : '#ff9800';
+                html += `
+                    <tr>
+                        <td>${trans.tanggal}</td>
+                        <td><strong>${trans.nasabah_id}</strong></td>
+                        <td>${trans.nama}</td>
+                        <td>${formatRupiah(trans.nominal)}</td>
+                        <td class="${trans.aksi}">${trans.aksi.toUpperCase()}</td>
+                        <td style="color: ${syncColor}; font-weight: bold; text-align: center;">${syncIcon}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        // Filter riwayat
+        function filterRiwayat(jenis) {
+            loadRiwayat(jenis);
+            addLog(`Filter riwayat: ${jenis}`);
+        }
+        
+        // ==================== FUNGSI AUTO SYNC ====================
+        
+        // Auto backup setiap 1 jam
+        function setupAutoBackup() {
+            setInterval(async () => {
+                if (navigator.onLine && gapiLoaded) {
+                    const lastBackup = localStorage.getItem('last_backup_time');
+                    const now = Date.now();
+                    
+                    // Backup setiap 1 jam
+                    if (!lastBackup || (now - parseInt(lastBackup)) > 60 * 60 * 1000) {
+                        addLog('Auto backup triggered');
+                        await backupToDrive();
+                    }
+                }
+            }, 5 * 60 * 1000); // Check setiap 5 menit
+        }
+        
+        // Auto load data dari localStorage
+        function loadDataFromLocal() {
+            try {
+                const transaksiData = localStorage.getItem('transaksi_jimpitan');
+                const nasabahData = localStorage.getItem('nasabah_jimpitan');
+                
+                semuaTransaksi = transaksiData ? JSON.parse(transaksiData) : [];
+                semuaNasabah = nasabahData ? JSON.parse(nasabahData) : [];
+                
+                // Hitung next ID
+                const maxID = Math.max(...semuaNasabah.map(n => parseInt(n.id)), 0);
+                nextID = maxID + 1;
+                
+                // Hitung saldo
+                saldoNasabah = {};
+                semuaTransaksi.forEach(trans => {
+                    if (!saldoNasabah[trans.nama]) {
+                        saldoNasabah[trans.nama] = 0;
+                    }
+                    
+                    if (trans.aksi === 'setor') {
+                        saldoNasabah[trans.nama] += trans.nominal;
+                    } else {
+                        saldoNasabah[trans.nama] -= trans.nominal;
+                    }
+                });
+                
+                addLog(`Loaded ${semuaNasabah.length} nasabah, ${semuaTransaksi.length} transaksi from localStorage`);
+                
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+                addLog('LocalStorage Error: ' + error.message);
+            }
+        }
+        
+        // ==================== INISIALISASI ====================
+        
+        async function initApp() {
+            addLog('System initializing...');
+            
+            // Update status online
+            updateOnlineStatus();
+            
+            // Set tanggal default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggalDari').value = today;
+            document.getElementById('tanggalSampai').value = today;
+            
+            // Format input nominal
+            document.getElementById('inputNominal').addEventListener('input', function(e) {
+                let value = this.value.replace(/\D/g, '');
+                if (value) {
+                    this.value = parseInt(value).toLocaleString('id-ID');
+                }
+                updatePreviewTransaksi();
+            });
+            
+            // Event listeners untuk preview
+            ['tanggalDari', 'tanggalSampai', 'selectAksi'].forEach(id => {
+                document.getElementById(id).addEventListener('change', updatePreviewTransaksi);
+            });
+            
+            // Load data
+            loadDataFromLocal();
+            updateDropdownNasabah();
+            updateDashboard();
+            loadRiwayat();
+            
+            // Try to load Google Drive API
+            try {
+                await loadGAPI();
+                addLog('Google Drive API connected');
+                
+                // Load folder ID dari localStorage
+                driveFolderId = localStorage.getItem('jimpitan_folder_id');
+                spreadsheetId = localStorage.getItem('jimpitan_spreadsheet_id');
+                
+                // Setup auto backup
+                setupAutoBackup();
+                
+            } catch (error) {
+                addLog('Google Drive not available: ' + error.message);
+                showAlert('Google Drive tidak tersedia, menggunakan mode lokal', 'info');
+            }
+            
+            // Load nasabah dari GitHub
+            setTimeout(() => {
+                loadNasabahFromGitHub();
+            }, 1000);
+            
+            // Network events
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            
+            addLog('System ready');
+            showAlert('Sistem Jimpitan Harian v6.0 siap!', 'success');
+        }
+        
+        // Jalankan saat halaman siap
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+    
+    <!-- Config dari file terpisah (HANYA DI HP) -->
+    <script src="config.js"></script>
+</body>
+</html>            text-align: center;
             position: relative;
         }
         
