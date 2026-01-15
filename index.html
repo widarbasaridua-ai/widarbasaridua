@@ -1,147 +1,708 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Tabungan Jimpitan</title>
-  
-  <!-- RESPONSIVE WAJIB -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- FAVICON STANDAR -->
-  <link rel="icon" href="assets/favicon.png">
-  
-  <!-- MANIFEST (nanti aktif penuh di tahap PWA) -->
-  <link rel="manifest" href="manifest.json">
-  
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f4f6f5;
-      margin: 0;
-      padding: 10px;
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 20px;
-      margin: 10px 0 15px;
-      color: #2e7d32;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .box {
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    label {
-      display: block;
-      margin-top: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #444;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      font-size: 14px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      transition: border 0.3s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #2e7d32;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 16px;
-      font-size: 15px;
-      font-weight: 500;
-      background: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover:not(:disabled) {
-      background: #1b5e20;
-    }
-
-    button:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-
-    .info {
-      font-size: 13px;
-      color: #555;
-      margin-top: 10px;
-      padding: 8px;
-      border-radius: 4px;
-      background: #f9f9f9;
-    }
-    
-    .info.success {
-      background: #e8f5e9;
-      color: #2e7d32;
-    }
-    
-    .info.error {
-      background: #ffebee;
-      color: #c62828;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 SISTEM JIMPITAN 210 HARI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS SANGAT SEDERHANA */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; padding: 10px; background: #f0f2f5; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .header { background: #1b5e20; color: white; padding: 10px; text-align: center; border-radius: 8px 8px 0 0; }
+        .header h1 { font-size: 1rem; }
+        .badge { background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; }
+        .content { background: white; padding: 10px; border-radius: 0 0 8px 8px; }
+        .tab-container { display: flex; border-bottom: 2px solid #ddd; margin-bottom: 10px; overflow-x: auto; }
+        .tab { padding: 6px 10px; cursor: pointer; border-bottom: 2px solid transparent; font-size: 0.8rem; white-space: nowrap; }
+        .tab.active { color: #1b5e20; border-bottom: 2px solid #1b5e20; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 8px; }
+        label { display: block; margin-bottom: 3px; font-size: 0.85rem; color: #333; }
+        select, input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .btn { background: #1b5e20; color: white; border: none; padding: 10px; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 5px; }
+        .btn:hover { background: #4caf50; }
+        .btn-danger { background: #dc3545; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-success { background: #28a745; }
+        .alert { padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 0.8rem; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info-box { background: #e8f5e9; padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+        th { background: #1b5e20; color: white; padding: 6px; }
+        td { padding: 6px; border-bottom: 1px solid #ddd; }
+        .loading { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 8px; width: 90%; max-width: 400px; }
+        .modal-header { background: #1b5e20; color: white; padding: 10px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; }
+        .modal-body { padding: 10px; }
+        .close-modal { background: none; border: none; color: white; cursor: pointer; }
+        .date-group { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 8px; }
+    </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>💰 TABUNGAN JIMPITAN</h1>
-    
-    <div class="box">
-      <label>ID Nasabah</label>
-      <input type="text" id="idNasabah" readonly>
-      
-      <label>Nama Nasabah</label>
-      <input type="text" id="namaNasabah" placeholder="Masukkan nama lengkap">
-      
-      <label>Tanggal Setor Dari</label>
-      <input type="date" id="tglDari">
-      
-      <label>Tanggal Setor Sampai</label>
-      <input type="date" id="tglSampai">
-      
-      <label>Nominal (Rp)</label>
-      <input type="number" id="nominal" placeholder="Contoh: 2000" min="0">
-      
-      <button id="btnSimpan" disabled>Simpan Data</button>
-      
-      <div class="info" id="infoStatus">
-        Lengkapi semua data untuk menyimpan
-      </div>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-piggy-bank"></i> SISTEM JIMPITAN 210 HARI <span class="badge">NASABAH 200H | SISTEM 10H</span></h1>
+        </div>
+        
+        <div class="content">
+            <div id="alertContainer"></div>
+            
+            <div class="tab-container">
+                <div class="tab active" onclick="switchTab('transaksi')"><i class="fas fa-exchange-alt"></i> Transaksi</div>
+                <div class="tab" onclick="switchTab('riwayat')"><i class="fas fa-history"></i> Riwayat</div>
+                <div class="tab" onclick="switchTab('nasabah')"><i class="fas fa-users"></i> Nasabah</div>
+                <div class="tab" onclick="switchTab('sistem')"><i class="fas fa-calculator"></i> Sistem</div>
+                <div class="tab" onclick="switchTab('backup')"><i class="fas fa-database"></i> Backup</div>
+            </div>
+            
+            <!-- Tab Transaksi -->
+            <div id="tab-transaksi" class="tab-content active">
+                <div class="form-group">
+                    <label>Nama Nasabah</label>
+                    <select id="nama"><option value="">Loading...</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Periode Setor</label>
+                    <div class="date-group">
+                        <input type="date" id="tanggal_dari">
+                        <input type="date" id="tanggal_sampai">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Total Nominal (Rp)</label>
+                    <input type="text" id="nominal" placeholder="1000000">
+                </div>
+                <div class="form-group">
+                    <label>Jenis Transaksi</label>
+                    <select id="aksi">
+                        <option value="setor">Setor Harian (Sistem 210 Hari)</option>
+                        <option value="tarik">Tarik Dana</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="simpanTransaksi()"><i class="fas fa-save"></i> SIMPAN & KIRIM TELEGRAM</button>
+                
+                <div class="info-box">
+                    <div id="infoProgress">Progress: Pilih nasabah</div>
+                    <div id="infoSaldo">Saldo: Pilih nasabah</div>
+                </div>
+            </div>
+            
+            <!-- Tab Riwayat -->
+            <div id="tab-riwayat" class="tab-content">
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="filterRiwayat('semua')">Semua</button>
+                    <button class="btn btn-success" onclick="filterRiwayat('hari-ini')">Hari Ini</button>
+                </div>
+                <table id="tableRiwayat">
+                    <thead><tr><th>No</th><th>Tanggal</th><th>Nama</th><th>Nominal</th><th>Jenis</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div class="button-group">
+                    <button class="btn" onclick="refreshRiwayat()">Refresh</button>
+                    <button class="btn btn-danger" onclick="hapusRiwayat()">Hapus Semua</button>
+                </div>
+            </div>
+            
+            <!-- Tab Nasabah -->
+            <div id="tab-nasabah" class="tab-content">
+                <div class="form-group">
+                    <label>Tambah Nasabah Baru</label>
+                    <input type="text" id="tambahNasabah" placeholder="Nama nasabah">
+                </div>
+                <button class="btn btn-success" onclick="tambahNasabah()">Tambah Nasabah</button>
+                <div style="margin-top: 10px;" id="daftarNasabahContainer"></div>
+            </div>
+            
+            <!-- Tab Sistem -->
+            <div id="tab-sistem" class="tab-content">
+                <div id="laporanSistemContainer">Memuat laporan...</div>
+                <div class="button-group">
+                    <button class="btn btn-warning" onclick="refreshLaporanSistem()">Refresh</button>
+                    <button class="btn" onclick="backupData()">Backup JSON</button>
+                </div>
+            </div>
+            
+            <!-- Tab Backup -->
+            <div id="tab-backup" class="tab-content">
+                <div class="info-box">
+                    <div>Total Nasabah: <span id="totalNasabah">0</span></div>
+                    <div>Total Transaksi: <span id="totalTransaksi">0</span></div>
+                    <div>Status: <span id="statusOnline">Online</span></div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="backupData()">Download Backup</button>
+                    <button class="btn btn-warning" onclick="restoreData()">Restore Backup</button>
+                </div>
+                <div class="form-group">
+                    <label>Upload Backup JSON</label>
+                    <input type="file" id="uploadBackup" accept=".json">
+                </div>
+                <button class="btn" onclick="syncNasabah()">Sync Nasabah dari Github</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- SCRIPT DASAR -->
-  <script src="js/app.js"></script>
+    <!-- Modal -->
+    <div class="modal" id="modalDetail">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Detail</h3>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== KONFIGURASI ====================
+        // UNTUK HP: ISI DATA DI SINI
+        const CONFIG = {
+            BOT_TOKEN: "8383045580:AAG44ZAWtecJCUvo66GXvzlkPhEEgTY7Spc",
+            CHAT_ID: "2095166318",
+            GAS_URL: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
+            NASABAH_URL: "https://raw.githubusercontent.com/widarbasaridua-ai/widarbasaridua/main/nasabah.txt"
+        };
+        
+        const SISTEM = { TOTAL_HARI: 210, HARI_SISTEM: 10, HARI_NASABAH: 200 };
+        
+        // ==================== VARIABEL ====================
+        let semuaTransaksi = [];
+        let semuaNasabah = [];
+        
+        // ==================== FUNGSI UTAMA ====================
+        function formatRupiah(angka) {
+            return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
+        }
+        
+        function showAlert(message, type = 'success') {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            document.getElementById('alertContainer').appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
+        }
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.textContent.includes(tabName.substring(0,3))) tab.classList.add('active');
+            });
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            if (tabName === 'riwayat') loadRiwayat();
+            else if (tabName === 'nasabah') loadDaftarNasabahUI();
+            else if (tabName === 'sistem') loadLaporanSistem();
+            else if (tabName === 'backup') updateInfoBackup();
+        }
+        
+        // ==================== FUNGSI NASABAH ====================
+        async function loadDaftarNasabah() {
+            try {
+                // Coba ambil dari GitHub
+                if (navigator.onLine) {
+                    const response = await fetch(CONFIG.NASABAH_URL);
+                    const text = await response.text();
+                    const nasabahGithub = text.split('\n')
+                        .map(n => n.trim())
+                        .filter(n => n && n !== '');
+                    
+                    // Gabungkan dengan lokal
+                    const nasabahLokal = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]');
+                    semuaNasabah = [...new Set([...nasabahGithub, ...nasabahLokal])];
+                    
+                    // Update lokal dengan data GitHub
+                    localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                } else {
+                    // Offline: pakai lokal saja
+                    semuaNasabah = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]');
+                }
+                
+                if (semuaNasabah.length === 0) {
+                    semuaNasabah = ["I Made Suarta", "I Nyoman Arta", "Ni Luh Putu Sari", "Ketut Dana", "Komang Sudiarta"];
+                    localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                }
+                
+                updateDropdownNasabah();
+                updateInfoBackup();
+                
+            } catch (error) {
+                // Fallback ke lokal
+                semuaNasabah = JSON.parse(localStorage.getItem('nasabah_jimpitan') || '[]');
+                updateDropdownNasabah();
+            }
+        }
+        
+        function updateDropdownNasabah() {
+            const select = document.getElementById('nama');
+            select.innerHTML = '<option value="">Pilih Nasabah...</option>';
+            semuaNasabah.forEach(nama => {
+                select.innerHTML += `<option value="${nama}">${nama}</option>`;
+            });
+        }
+        
+        async function syncNasabah() {
+            if (!navigator.onLine) {
+                showAlert('Tidak ada koneksi internet', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(CONFIG.NASABAH_URL);
+                const text = await response.text();
+                const nasabahGithub = text.split('\n')
+                    .map(n => n.trim())
+                    .filter(n => n && n !== '');
+                
+                // Update lokal
+                semuaNasabah = nasabahGithub;
+                localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                
+                updateDropdownNasabah();
+                loadDaftarNasabahUI();
+                showAlert(`Synced ${semuaNasabah.length} nasabah dari GitHub`, 'success');
+                
+            } catch (error) {
+                showAlert('Gagal sync dari GitHub', 'error');
+            }
+        }
+        
+        function tambahNasabah() {
+            const input = document.getElementById('tambahNasabah');
+            const namaBaru = input.value.trim();
+            if (!namaBaru) return showAlert('Masukkan nama nasabah', 'error');
+            
+            semuaNasabah.push(namaBaru);
+            localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+            updateDropdownNasabah();
+            loadDaftarNasabahUI();
+            input.value = '';
+            showAlert('Nasabah ditambahkan', 'success');
+        }
+        
+        function loadDaftarNasabahUI() {
+            const container = document.getElementById('daftarNasabahContainer');
+            if (semuaNasabah.length === 0) {
+                container.innerHTML = '<p style="text-align: center;">Belum ada nasabah</p>';
+                return;
+            }
+            
+            let html = '';
+            semuaNasabah.forEach(nama => {
+                const saldo = hitungSaldoNasabah(nama);
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px; background: #f8f9fa; margin-bottom: 3px; border-radius: 3px;">
+                        <div>${nama}<br><small>Saldo: ${formatRupiah(saldo)}</small></div>
+                        <button onclick="hapusNasabah('${nama}')" style="background: #dc3545; color: white; border: none; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem;">Hapus</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        function hapusNasabah(nama) {
+            if (!confirm(`Hapus nasabah ${nama}?`)) return;
+            semuaNasabah = semuaNasabah.filter(n => n !== nama);
+            localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+            updateDropdownNasabah();
+            loadDaftarNasabahUI();
+            showAlert('Nasabah dihapus', 'success');
+        }
+        
+        // ==================== FUNGSI TRANSAKSI ====================
+        function loadTransaksi() {
+            semuaTransaksi = JSON.parse(localStorage.getItem('transaksi_jimpitan') || '[]');
+            return semuaTransaksi;
+        }
+        
+        function saveTransaksi() {
+            localStorage.setItem('transaksi_jimpitan', JSON.stringify(semuaTransaksi));
+        }
+        
+        function hitungSaldoNasabah(nama) {
+            let saldo = 0;
+            semuaTransaksi.forEach(t => {
+                if (t.nama === nama) {
+                    if (t.aksi === 'setor') saldo += t.nominal;
+                    else if (t.aksi === 'tarik') saldo -= t.nominal;
+                }
+            });
+            return saldo;
+        }
+        
+        function hitungProgressJimpitan(nama) {
+            const transaksiSetor = semuaTransaksi.filter(t => t.nama === nama && t.aksi === 'setor');
+            let totalHari = 0;
+            let totalSetoran = 0;
+            
+            transaksiSetor.forEach(t => {
+                const start = new Date(t.tanggal_dari);
+                const end = new Date(t.tanggal_sampai);
+                const hari = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                totalHari += hari;
+                totalSetoran += t.nominal;
+            });
+            
+            const hariTersisa = Math.max(0, SISTEM.TOTAL_HARI - totalHari);
+            const progress = (totalHari / SISTEM.TOTAL_HARI * 100).toFixed(2);
+            
+            return { totalHari, hariTersisa, progress, totalSetoran };
+        }
+        
+        async function simpanTransaksi() {
+            const nama = document.getElementById('nama').value;
+            const tglDari = document.getElementById('tanggal_dari').value;
+            const tglSampai = document.getElementById('tanggal_sampai').value;
+            const nominalInput = document.getElementById('nominal').value;
+            const aksi = document.getElementById('aksi').value;
+            
+            if (!nama || !tglDari || !tglSampai || !nominalInput) {
+                return showAlert('Harap isi semua field', 'error');
+            }
+            
+            const nominal = parseInt(nominalInput.replace(/\./g, ''));
+            if (isNaN(nominal) || nominal <= 0) {
+                return showAlert('Nominal tidak valid', 'error');
+            }
+            
+            // Generate konten Telegram
+            const start = new Date(tglDari);
+            const end = new Date(tglSampai);
+            const totalHari = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+            
+            const persentaseNasabah = SISTEM.HARI_NASABAH / SISTEM.TOTAL_HARI;
+            const persentaseSistem = SISTEM.HARI_SISTEM / SISTEM.TOTAL_HARI;
+            
+            const untukNasabah = Math.floor(nominal * persentaseNasabah);
+            const untukSistem = nominal - untukNasabah;
+            
+            const saldoSebelum = hitungSaldoNasabah(nama);
+            const saldoSesudah = aksi === 'setor' ? saldoSebelum + nominal : saldoSebelum - nominal;
+            
+            let content = `LAPORAN JIMPITAN HARIAN (${aksi === 'setor' ? 'SETOR' : 'TARIK'})\n`;
+            content += '='.repeat(40) + '\n\n';
+            content += `NAMA: ${nama}\n`;
+            content += `NOMINAL: ${formatRupiah(nominal)}\n`;
+            content += `PERIODE: ${tglDari} s.d ${tglSampai}\n`;
+            content += `HARI: ${totalHari} hari\n\n`;
+            
+            if (aksi === 'setor') {
+                content += `SISTEM 210 HARI:\n`;
+                content += `Nasabah: ${SISTEM.HARI_NASABAH} hari\n`;
+                content += `Sistem: ${SISTEM.HARI_SISTEM} hari\n\n`;
+                content += `PEMBAGIAN DANA:\n`;
+                content += `Untuk Nasabah: ${formatRupiah(untukNasabah)}\n`;
+                content += `Untuk Sistem: ${formatRupiah(untukSistem)}\n\n`;
+            }
+            
+            content += `SALDO:\n`;
+            content += `Sebelum: ${formatRupiah(saldoSebelum)}\n`;
+            content += `Sesudah: ${formatRupiah(saldoSesudah)}\n\n`;
+            content += `DIBUAT: ${new Date().toLocaleDateString('id-ID')}\n`;
+            content += `STATUS: ✅ BERHASIL`;
+            
+            try {
+                // Kirim ke Telegram
+                if (navigator.onLine) {
+                    const fileName = `${nama}_${aksi === 'setor' ? 'STR' : 'TRK'}_${new Date().toISOString().split('T')[0]}.txt`;
+                    const blob = new Blob([content], { type: "text/plain" });
+                    const formData = new FormData();
+                    formData.append("document", blob, fileName);
+                    formData.append("chat_id", CONFIG.CHAT_ID);
+                    
+                    const response = await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendDocument`, {
+                        method: "POST",
+                        body: formData
+                    });
+                    
+                    if (!response.ok) throw new Error('Telegram error');
+                }
+                
+                // Simpan transaksi
+                const transaksiBaru = {
+                    id: Date.now().toString(),
+                    tanggal: new Date().toISOString().split('T')[0],
+                    nama: nama,
+                    nominal: nominal,
+                    aksi: aksi,
+                    tanggal_dari: tglDari,
+                    tanggal_sampai: tglSampai,
+                    waktu: new Date().toISOString()
+                };
+                
+                semuaTransaksi.push(transaksiBaru);
+                saveTransaksi();
+                
+                // Reset form
+                document.getElementById('nominal').value = '';
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('tanggal_dari').value = today;
+                document.getElementById('tanggal_sampai').value = today;
+                
+                showAlert('Transaksi berhasil', 'success');
+                
+                // Auto backup ke Google Apps Script
+                if (navigator.onLine && CONFIG.GAS_URL.includes('script.google.com')) {
+                    backupToGoogleApps();
+                }
+                
+            } catch (error) {
+                showAlert('Transaksi disimpan lokal, gagal ke Telegram', 'warning');
+            }
+        }
+        
+        async function backupToGoogleApps() {
+            try {
+                const data = {
+                    transaksi: semuaTransaksi,
+                    nasabah: semuaNasabah,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(CONFIG.GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                console.log('Backup ke GAS berhasil');
+            } catch (error) {
+                console.log('Gagal backup ke GAS:', error);
+            }
+        }
+        
+        // ==================== FUNGSI RIWAYAT ====================
+        function loadRiwayat(filter = 'semua') {
+            const tbody = document.querySelector('#tableRiwayat tbody');
+            let transaksiTampil = [...semuaTransaksi];
+            
+            if (filter === 'hari-ini') {
+                const today = new Date().toISOString().split('T')[0];
+                transaksiTampil = transaksiTampil.filter(t => t.tanggal === today);
+            }
+            
+            transaksiTampil.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
+            
+            if (transaksiTampil.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada transaksi</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            transaksiTampil.forEach((trans, index) => {
+                const warna = trans.aksi === 'setor' ? 'green' : 'red';
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${trans.tanggal}</td>
+                        <td>${trans.nama}</td>
+                        <td style="color: ${wara}">${formatRupiah(trans.nominal)}</td>
+                        <td>${trans.aksi === 'setor' ? 'SETOR' : 'TARIK'}</td>
+                    </tr>
+                `;
+            });
+        }
+        
+        function filterRiwayat(jenis) {
+            loadRiwayat(jenis);
+        }
+        
+        function refreshRiwayat() {
+            loadTransaksi();
+            loadRiwayat();
+            showAlert('Riwayat diperbarui', 'success');
+        }
+        
+        function hapusRiwayat() {
+            if (!confirm('Hapus semua riwayat?')) return;
+            semuaTransaksi = [];
+            localStorage.removeItem('transaksi_jimpitan');
+            loadRiwayat();
+            showAlert('Riwayat dihapus', 'success');
+        }
+        
+        // ==================== FUNGSI SISTEM ====================
+        function hitungTotalDanaSistem() {
+            let total = 0;
+            semuaTransaksi.forEach(t => {
+                if (t.aksi === 'setor') {
+                    const persentaseSistem = SISTEM.HARI_SISTEM / SISTEM.TOTAL_HARI;
+                    total += Math.floor(t.nominal * persentaseSistem);
+                }
+            });
+            return total;
+        }
+        
+        function loadLaporanSistem() {
+            const container = document.getElementById('laporanSistemContainer');
+            const totalDanaSistem = hitungTotalDanaSistem();
+            
+            const totalSetoran = semuaTransaksi
+                .filter(t => t.aksi === 'setor')
+                .reduce((sum, t) => sum + t.nominal, 0);
+            
+            const persentase = totalSetoran > 0 ? 
+                (totalDanaSistem / totalSetoran * 100).toFixed(2) : '0.00';
+            
+            let html = `
+                <div style="background: #343a40; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <div style="font-size: 1.2rem; font-weight: bold;">${formatRupiah(totalDanaSistem)}</div>
+                    <div>Dana Sistem (${SISTEM.HARI_SISTEM} hari / ${(SISTEM.HARI_SISTEM/SISTEM.TOTAL_HARI*100).toFixed(2)}%)</div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 8px; border-radius: 5px; margin-bottom: 8px;">
+                    <div>Total Setoran Semua Nasabah: ${formatRupiah(totalSetoran)}</div>
+                    <div>Persentase Sistem: ${persentase}%</div>
+                    <div>Dana Nasabah: ${formatRupiah(totalSetoran - totalDanaSistem)}</div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <div style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: conic-gradient(
+                        #dc3545 0% ${persentase}%,
+                        #28a745 ${persentase}% 100%
+                    ); position: relative;">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            ${persentase}%
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function refreshLaporanSistem() {
+            loadLaporanSistem();
+            showAlert('Laporan diperbarui', 'success');
+        }
+        
+        // ==================== FUNGSI BACKUP ====================
+        function backupData() {
+            const data = {
+                transaksi: semuaTransaksi,
+                nasabah: semuaNasabah,
+                backupDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_jimpitan_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showAlert('Backup berhasil didownload', 'success');
+        }
+        
+        function restoreData() {
+            document.getElementById('uploadBackup').click();
+        }
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (!data.transaksi || !data.nasabah) {
+                        throw new Error('Format file tidak valid');
+                    }
+                    
+                    if (confirm('Restore data dari backup?')) {
+                        semuaTransaksi = data.transaksi;
+                        semuaNasabah = data.nasabah;
+                        
+                        localStorage.setItem('transaksi_jimpitan', JSON.stringify(semuaTransaksi));
+                        localStorage.setItem('nasabah_jimpitan', JSON.stringify(semuaNasabah));
+                        
+                        updateDropdownNasabah();
+                        loadRiwayat();
+                        loadDaftarNasabahUI();
+                        loadLaporanSistem();
+                        updateInfoBackup();
+                        
+                        showAlert('Data berhasil direstore', 'success');
+                    }
+                } catch (error) {
+                    showAlert('Gagal membaca file backup', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        function updateInfoBackup() {
+            document.getElementById('totalNasabah').textContent = semuaNasabah.length;
+            document.getElementById('totalTransaksi').textContent = semuaTransaksi.length;
+            document.getElementById('statusOnline').textContent = navigator.onLine ? 'Online' : 'Offline';
+        }
+        
+        // ==================== INISIALISASI ====================
+        function initApp() {
+            // Set tanggal default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal_dari').value = today;
+            document.getElementById('tanggal_sampai').value = today;
+            
+            // Event listeners
+            document.getElementById('uploadBackup').addEventListener('change', handleFileUpload);
+            
+            document.getElementById('nama').addEventListener('change', function() {
+                const nama = this.value;
+                if (nama) {
+                    const saldo = hitungSaldoNasabah(nama);
+                    const progress = hitungProgressJimpitan(nama);
+                    document.getElementById('infoSaldo').textContent = `Saldo: ${formatRupiah(saldo)}`;
+                    document.getElementById('infoProgress').textContent = `Progress: ${progress.totalHari}/${SISTEM.TOTAL_HARI} hari (${progress.progress}%)`;
+                }
+            });
+            
+            // Format nominal
+            document.getElementById('nominal').addEventListener('input', function(e) {
+                let value = this.value.replace(/\D/g, '');
+                if (value) this.value = parseInt(value).toLocaleString('id-ID');
+            });
+            
+            // Load data
+            loadDaftarNasabah();
+            loadTransaksi();
+            loadRiwayat();
+            
+            // Auto sync nasabah saat online
+            if (navigator.onLine) {
+                setTimeout(syncNasabah, 1000);
+            }
+            
+            // Update status online
+            window.addEventListener('online', () => {
+                document.getElementById('statusOnline').textContent = 'Online';
+                syncNasabah(); // Auto sync saat online
+            });
+            
+            window.addEventListener('offline', () => {
+                document.getElementById('statusOnline').textContent = 'Offline';
+            });
+            
+            showAlert('Sistem Jimpitan siap digunakan', 'success');
+        }
+        
+        // Jalankan aplikasi
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>
