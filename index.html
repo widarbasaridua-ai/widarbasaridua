@@ -3,1110 +3,701 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💰 JIMPITAN PRO | Cash Flow Game</title>
     
     <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#00d2ff">
+    <meta name="theme-color" content="#1b5e20">
+    <meta name="description" content="Sistem Jimpitan Harian - Aplikasi PWA untuk pengelolaan jimpitan">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Jimpitan Pro">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiMwMGQyZmYiLz48cGF0aCBkPSJNMTI4IDY0SDY0VjEyOEgxMjhWNjRaIiBmaWxsPSJ3aGl0ZSIvPjxwYXRoIGQ9Ik05NiAxNjBDMTMwLjUgMTYwIDE2MCAxMzAuNSAxNjAgOTZDMTYwIDYxLjUgMTMwLjUgMzIgOTYgMzJDNjEuNSAzMiAzMiA2MS41IDMyIDk2QzMyIDEzMC41IDYxLjUgMTYwIDk2IDE2MFoiIGZpbGw9IndoaXRlIi8+PC9zdmc+">
     
-    <!-- Game/TikTok Style Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@300;400;600;700&family=Orbitron:wght@500;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <title>💰 SISTEM JIMPITAN HARIAN</title>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#1b5e20">
+    
+    <!-- Styles & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --accent: #ff0080;
-            --success: #00ff88;
-            --danger: #ff4757;
-            --warning: #ff9f1a;
-            --dark: #0a0a1a;
-            --darker: #050510;
-            --light: #ffffff;
-            --neon-glow: 0 0 20px rgba(0, 210, 255, 0.5);
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--darker), #1a1a2e);
-            color: var(--light);
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            overflow-x: hidden;
-            padding: 15px;
-            position: relative;
+            padding: 20px;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 210, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.1) 0%, transparent 50%);
-            z-index: -1;
+        /* PWA Specific */
+        @media (display-mode: standalone) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
         }
         
-        /* CONTAINER - GAME UI STYLE */
-        .game-container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: rgba(10, 10, 26, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            border: 2px solid rgba(0, 210, 255, 0.3);
-            box-shadow: 
-                0 0 30px rgba(0, 210, 255, 0.3),
-                inset 0 0 20px rgba(0, 210, 255, 0.1);
-            overflow: hidden;
-            position: relative;
-            padding: 5px;
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        .game-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                var(--primary), 
-                var(--accent), 
-                var(--primary));
-            animation: scanline 3s linear infinite;
-        }
-        
-        @keyframes scanline {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        /* HEADER - ESPORTS STYLE */
-        .game-header {
-            background: linear-gradient(135deg, #001f3f, #003366);
-            padding: 25px 20px;
+        .header { 
+            background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%); 
+            color: white; 
+            padding: 20px; 
             text-align: center;
-            border-bottom: 3px solid var(--primary);
             position: relative;
-            overflow: hidden;
         }
         
-        .game-header::after {
-            content: '';
+        .header h1 { 
+            font-size: 1.3rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;
+        }
+        
+        .pwa-install {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(0, 210, 255, 0.1), 
-                transparent);
-            animation: shine 3s infinite;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        .game-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-        }
-        
-        .game-subtitle {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 1.3rem;
-            color: var(--success);
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(45deg, var(--success), #00cc6a);
-            color: var(--dark);
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .content { padding: 20px; }
+        
+        .card { 
+            background: #f8f9fa; 
+            border-radius: 15px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            border: 1px solid #e9ecef;
+        }
+        
+        .form-group { margin-bottom: 15px; }
+        
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: 500; 
+            color: #495057; 
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
-            box-shadow: var(--neon-glow);
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* CONTENT AREA */
-        .game-content {
-            padding: 25px;
-        }
-        
-        /* ALERTS - GAME NOTIFICATION STYLE */
-        .alert-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            max-width: 350px;
-        }
-        
-        .game-alert {
-            background: rgba(20, 20, 40, 0.95);
-            border-left: 5px solid var(--primary);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            transform: translateX(120%);
-            animation: slideIn 0.5s forwards, slideOut 0.5s forwards 3.5s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(0, 210, 255, 0.2);
-        }
-        
-        @keyframes slideIn {
-            to { transform: translateX(0); }
-        }
-        
-        @keyframes slideOut {
-            to { transform: translateX(120%); }
-        }
-        
-        /* CARDS - GAME UI CARDS */
-        .game-card {
-            background: rgba(15, 15, 35, 0.7);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 2px solid rgba(0, 210, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .game-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.2);
-        }
-        
-        .game-card-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* FORM ELEMENTS - GAME STYLE */
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-select, .form-input {
-            width: 100%;
-            padding: 18px 20px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(0, 210, 255, 0.3);
-            border-radius: 15px;
-            color: var(--light);
-            font-size: 1rem;
+        select, input { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 10px; 
+            border: 2px solid #dee2e6; 
+            font-size: 14px; 
+            background: white;
             font-family: 'Poppins', sans-serif;
-            transition: all 0.3s ease;
+        }
+        
+        select:focus, input:focus { 
+            border-color: #1b5e20; 
             outline: none;
         }
         
-        .form-select:focus, .form-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
-            background: rgba(0, 0, 0, 0.6);
+        .btn { 
+            background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%); 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            width: 100%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            transition: transform 0.2s;
         }
         
-        .form-select option {
-            background: var(--dark);
-            color: var(--light);
-            padding: 10px;
+        .btn:active {
+            transform: scale(0.98);
         }
         
-        /* DATE GROUP */
-        .date-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        /* BUTTONS - GAME ACTION BUTTONS */
-        .game-btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            width: 100%;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
-        }
-        
-        .game-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            transition: 0.5s;
-        }
-        
-        .game-btn:hover::before {
-            left: 100%;
-        }
-        
-        .game-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4);
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-        }
-        
-        .game-btn:active {
-            transform: translateY(-1px);
-        }
-        
-        /* LOADING ANIMATION */
-        .game-loading {
-            display: inline-block;
-            width: 25px;
-            height: 25px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
+        .loading { 
+            display: inline-block; 
+            width: 18px; 
+            height: 18px; 
+            border: 2px solid rgba(255,255,255,0.3); 
+            border-top: 2px solid white; 
+            border-radius: 50%; 
             animation: spin 1s linear infinite;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
         }
         
-        /* SUMMARY BOX - GAME STATS STYLE */
-        .stats-box {
-            background: linear-gradient(135deg, rgba(0, 50, 100, 0.3), rgba(58, 123, 213, 0.2));
-            border-radius: 20px;
-            padding: 25px;
-            margin: 25px 0;
-            border: 2px solid rgba(0, 210, 255, 0.2);
-            position: relative;
-            overflow: hidden;
+        .alert { 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            font-size: 0.8rem;
+            animation: slideDown 0.3s ease;
         }
         
-        .stats-box::before {
-            content: '';
-            position: absolute;
+        @keyframes slideDown {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .alert-info { background: #d1ecf1; color: #0c5460; }
+        
+        .date-group { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px;
+        }
+        
+        /* Offline Indicator */
+        .offline-indicator {
+            position: fixed;
             top: 0;
             left: 0;
-            width: 10px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
-        }
-        
-        .stats-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .stat-row:last-child {
-            border-bottom: none;
-        }
-        
-        .stat-label {
-            color: #a0a0c0;
-            font-weight: 500;
-        }
-        
-        .stat-value {
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            color: var(--success);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-        }
-        
-        /* FOOTER - GAME CREDITS STYLE */
-        .game-footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 2px solid rgba(0, 210, 255, 0.2);
-            color: #a0a0c0;
-            font-size: 0.9rem;
-        }
-        
-        .game-footer .highlight {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .install-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: linear-gradient(45deg, var(--accent), #ff4da6);
+            right: 0;
+            background: #dc3545;
             color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        /* Sync Indicator */
+        .sync-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1b5e20;
+            color: white;
+            padding: 10px 15px;
             border-radius: 25px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.3);
-        }
-        
-        .install-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 0, 128, 0.5);
-        }
-        
-        /* RESPONSIVE */
-        @media (max-width: 600px) {
-            .game-title { font-size: 1.8rem; }
-            .game-subtitle { font-size: 1.1rem; }
-            .game-card { padding: 20px; }
-            .game-content { padding: 20px; }
-            .date-grid { grid-template-columns: 1fr; }
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- ALERT CONTAINER -->
-    <div id="alertContainer" class="alert-container"></div>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <i class="fas fa-wifi-slash"></i> Anda sedang offline. Data akan disimpan lokal.
+    </div>
     
-    <!-- MAIN GAME CONTAINER -->
-    <div class="game-container">
-        <!-- HEADER -->
-        <div class="game-header">
-            <h1 class="game-title">
-                <i class="fas fa-coins"></i> JIMPITAN PRO
-            </h1>
-            <div class="game-subtitle">CASH FLOW GAME 2026</div>
-            <div class="status-badge" id="statusBadge">
-                <i class="fas fa-bolt"></i> ONLINE
-            </div>
-            <div style="margin-top: 10px; font-size: 0.9rem; color: #a0a0c0;">
-                <i class="fas fa-clock"></i> Update: <span id="lastUpdate">-</span>
-            </div>
+    <!-- Sync Indicator -->
+    <div class="sync-indicator" id="syncIndicator">
+        <i class="fas fa-sync fa-spin"></i> Menyimpan...
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <button class="pwa-install" id="installButton">
+                <i class="fas fa-download"></i> Install
+            </button>
+            <h1><i class="fas fa-piggy-bank"></i> SISTEM JIMPITAN HARIAN</h1>
         </div>
         
-        <!-- CONTENT -->
-        <div class="game-content">
-            <!-- TRANSACTION CARD -->
-            <div class="game-card">
-                <h2 class="game-card-title">
-                    <i class="fas fa-gamepad"></i> INPUT TRANSAKSI
-                </h2>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user-ninja"></i> PLAYER (NASABAH)
-                    </label>
-                    <select id="nama" class="form-select" required>
-                        <option value="">Loading Players...</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-bolt"></i> ACTION TYPE
-                    </label>
-                    <select id="aksi" class="form-select" required onchange="toggleTanggalInput()">
-                        <option value="setor">💰 DEPOSIT (Setor)</option>
-                        <option value="tarik">💸 WITHDRAW (Tarik)</option>
-                    </select>
-                </div>
-                
-                <!-- DEPOSIT PERIOD -->
-                <div id="tanggalSetor" class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-calendar-star"></i> DEPOSIT PERIOD
-                    </label>
-                    <div class="date-grid">
-                        <input type="date" id="tanggal_dari" class="form-input" required>
-                        <input type="date" id="tanggal_sampai" class="form-input" required>
+        <div class="content">
+            <div id="alertContainer"></div>
+            
+            <div id="tab-transaksi">
+                <div class="card">
+                    <h2 style="color: #1b5e20; margin-bottom: 15px;">
+                        <i class="fas fa-exchange-alt"></i> Input Transaksi
+                    </h2>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nama Nasabah</label>
+                        <select id="nama" required>
+                            <option value="">Memuat Nasabah...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-exchange-alt"></i> Jenis Transaksi</label>
+                        <select id="aksi" required onchange="toggleTanggalInput()">
+                            <option value="setor">Setor Harian</option>
+                            <option value="tarik">Tarik Dana</option>
+                            <option value="tambahan">Setor Tambahan</option>
+                        </select>
+                    </div>
+                    
+                    <div id="tanggalSetor" class="form-group">
+                        <label><i class="fas fa-calendar"></i> Periode Setor</label>
+                        <div class="date-group">
+                            <input type="date" id="tanggal_dari" required>
+                            <input type="date" id="tanggal_sampai" required>
+                        </div>
+                    </div>
+                    
+                    <div id="tanggalTarik" class="form-group" style="display: none;">
+                        <label><i class="fas fa-calendar"></i> Tanggal Tarik</label>
+                        <input type="date" id="tanggal_tarik" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Total Nominal (Rp)</label>
+                        <input type="text" id="nominal" placeholder="Contoh: 500.000" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-sticky-note"></i> Keterangan (Opsional)</label>
+                        <textarea id="keterangan" rows="2" placeholder="Tambahkan keterangan..." style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #dee2e6; font-family: 'Poppins', sans-serif;"></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="simpanTransaksi()" id="btnSimpan">
+                        <i class="fas fa-save"></i> SIMPAN TRANSAKSI
+                    </button>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button class="btn" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); padding: 10px;" onclick="syncFromGitHub()" id="btnSyncGitHub">
+                            <i class="fab fa-github"></i> Sync Nasabah dari GitHub
+                        </button>
                     </div>
                 </div>
                 
-                <!-- WITHDRAW DATE -->
-                <div id="tanggalTarik" class="form-group" style="display: none;">
-                    <label class="form-label">
-                        <i class="fas fa-calendar-times"></i> WITHDRAW DATE
-                    </label>
-                    <input type="date" id="tanggal_tarik" class="form-input" required>
+                <!-- Stats Card -->
+                <div class="card">
+                    <h3 style="color: #1b5e20; margin-bottom: 10px;">
+                        <i class="fas fa-chart-bar"></i> Statistik
+                    </h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #1b5e20;" id="totalNasabah">0</div>
+                            <div style="font-size: 0.8rem; color: #6c757d;">Nasabah</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #28a745;" id="totalSaldo">Rp 0</div>
+                            <div style="font-size: 0.8rem; color: #6c757d;">Total Saldo</div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-gem"></i> AMOUNT (Rp)
-                    </label>
-                    <input type="text" id="nominal" class="form-input" placeholder="Contoh: 500.000" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-comment-dots"></i> NOTES (Optional)
-                    </label>
-                    <input type="text" id="keterangan" class="form-input" placeholder="Enter notes...">
-                </div>
-            </div>
-            
-            <!-- STATS PREVIEW -->
-            <div class="stats-box">
-                <h3 class="stats-title">
-                    <i class="fas fa-chart-bar"></i> TRANSACTION PREVIEW
-                </h3>
-                <div class="stat-row">
-                    <span class="stat-label">PLAYER:</span>
-                    <span id="summaryNama" class="stat-value">-</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">ACTION:</span>
-                    <span id="summaryJenis" class="stat-value">-</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">AMOUNT:</span>
-                    <span id="summaryNominal" class="stat-value">-</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">DATE:</span>
-                    <span id="summaryTanggal" class="stat-value">-</span>
-                </div>
-            </div>
-            
-            <!-- SUBMIT BUTTON -->
-            <button class="game-btn" onclick="simpanTransaksi()" id="btnSimpan">
-                <i class="fas fa-cloud-upload-alt"></i> SAVE TO SERVER
-            </button>
-            
-            <!-- CONFIGURATION PANEL -->
-            <div class="game-card" id="configPanel" style="display: none;">
-                <h2 class="game-card-title">
-                    <i class="fas fa-cog"></i> SYSTEM CONFIGURATION
-                </h2>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-link"></i> Google Apps Script URL
-                    </label>
-                    <input type="text" id="webAppUrl" class="form-input" 
-                           placeholder="https://script.google.com/macros/s/.../exec">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-robot"></i> Telegram Bot Token
-                    </label>
-                    <input type="text" id="telegramToken" class="form-input" 
-                           placeholder="1234567890:ABCDEFGhijklmnopQRSTUVWXYZ">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-user-circle"></i> Telegram Chat ID
-                    </label>
-                    <input type="text" id="telegramChatId" class="form-input" 
-                           placeholder="1234567890">
-                </div>
-                <button class="game-btn" onclick="saveConfig()" style="background: linear-gradient(45deg, var(--accent), #ff4da6);">
-                    <i class="fas fa-save"></i> SAVE CONFIGURATION
-                </button>
-                <button class="game-btn" onclick="loadConfig()" style="background: linear-gradient(45deg, var(--warning), #ffcc00); margin-top: 10px;">
-                    <i class="fas fa-sync"></i> LOAD EXTERNAL CONFIG
-                </button>
-            </div>
-        </div>
-        
-        <!-- FOOTER -->
-        <div class="game-footer">
-            <p>
-                <span class="highlight">JIMPITAN PRO v3.0</span> • CASH FLOW GAME
-            </p>
-            <p style="margin-top: 5px; font-size: 0.8rem;">
-                <i class="fas fa-wifi"></i> Online • 
-                <i class="fas fa-robot"></i> Telegram • 
-                <i class="fas fa-google"></i> Sheets
-            </p>
-            <div style="margin-top: 15px;">
-                <button onclick="showConfigPanel()" class="game-btn" style="padding: 10px; font-size: 0.9rem;">
-                    <i class="fas fa-cog"></i> CONFIGURE SYSTEM
-                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // ============================================
-        // CONFIGURATION - AMAN UNTUK GITHUB
-        // ============================================
-        // PUBLIC CONFIG (aman untuk diupload)
-        const PUBLIC_CONFIG = {
-            APP_NAME: 'Jimpitan Pro',
-            APP_VERSION: '3.0',
-            GITHUB_NASABAH_URL: 'https://raw.githubusercontent.com/widarbasaridua-ai/widarbasaridua/main/nasabah.txt'
-        };
+        // Konfigurasi
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCXGoLPuIgfty8x0ypUu61gY3T--pf_BtGNAxNqL9uFH5xWfpQFWptEIUzy-I-oqvgeA/exec';
+        const GITHUB_NASABAH_URL = 'https://raw.githubusercontent.com/widarbasaridua-ai/widarbasaridua/main/nasabah.txt';
         
-        // PRIVATE CONFIG (akan diisi user)
-        let USER_CONFIG = {
-            WEB_APP_URL: '',
-            TELEGRAM_BOT_TOKEN: '',
-            TELEGRAM_CHAT_ID: '',
-            isConfigured: false
-        };
+        let semuaNasabah = [];
+        let deferredPrompt;
         
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
+        // ===== PWA FUNCTIONS =====
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installButton').style.display = 'block';
+        });
+        
+        document.getElementById('installButton').addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('PWA installed');
+                document.getElementById('installButton').style.display = 'none';
+            }
+            
+            deferredPrompt = null;
+        });
+        
+        // Check online status
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        
+        function updateOnlineStatus() {
+            const isOnline = navigator.onLine;
+            document.getElementById('offlineIndicator').style.display = isOnline ? 'none' : 'block';
+            
+            if (isOnline) {
+                syncPendingData();
+            }
+        }
+        
+        // ===== UTILITY FUNCTIONS =====
         function formatRupiah(angka) {
-            if (!angka && angka !== 0) return 'Rp 0';
-            const num = parseInt(angka.toString().replace(/\D/g, ''));
-            return 'Rp ' + num.toLocaleString('id-ID');
+            return 'Rp ' + parseInt(angka || 0).toLocaleString('id-ID');
         }
         
         function formatTanggal(dateString) {
-            if (!dateString) return '-';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('id-ID', {
-                    day: '2-digit', 
-                    month: 'short', 
-                    year: 'numeric'
-                });
-            } catch (error) {
-                return dateString;
-            }
-        }
-        
-        function getCurrentTime() {
-            const now = new Date();
-            return now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
             });
         }
         
-        function showAlert(message, type = 'success') {
+        function showAlert(message, type = 'success', duration = 3000) {
             const alertContainer = document.getElementById('alertContainer');
             const alert = document.createElement('div');
-            alert.className = 'game-alert';
-            
-            let icon = 'info-circle';
-            let color = '#00d2ff';
-            
-            switch(type) {
-                case 'success':
-                    icon = 'check-circle';
-                    color = '#00ff88';
-                    break;
-                case 'error':
-                    icon = 'exclamation-triangle';
-                    color = '#ff4757';
-                    break;
-                case 'warning':
-                    icon = 'exclamation-circle';
-                    color = '#ff9f1a';
-                    break;
-                case 'info':
-                    icon = 'info-circle';
-                    color = '#00d2ff';
-                    break;
-            }
-            
+            alert.className = `alert alert-${type}`;
             alert.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <i class="fas fa-${icon}" style="color: ${color}; font-size: 1.2rem;"></i>
-                    <div>
-                        <div style="font-weight: 600; margin-bottom: 5px; color: white;">${PUBLIC_CONFIG.APP_NAME}</div>
-                        <div style="color: #a0a0c0;">${message}</div>
-                    </div>
-                </div>
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                ${message}
             `;
-            
             alertContainer.appendChild(alert);
             
             setTimeout(() => {
-                alert.style.animation = 'slideOut 0.5s forwards';
-                setTimeout(() => alert.remove(), 500);
-            }, 4000);
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.3s';
+                setTimeout(() => alert.remove(), 300);
+            }, duration);
+        }
+        
+        function showSyncIndicator(show) {
+            document.getElementById('syncIndicator').style.display = show ? 'flex' : 'none';
         }
         
         function showLoading(buttonId) {
             const button = document.getElementById(buttonId);
-            if (button) {
-                button.innerHTML = '<span class="game-loading"></span> PROCESSING...';
-                button.disabled = true;
-                button.style.opacity = '0.7';
-            }
+            button.innerHTML = '<span class="loading"></span> Memproses...';
+            button.disabled = true;
         }
         
-        function stopLoading(buttonId) {
+        function stopLoading(buttonId, text = 'SIMPAN TRANSAKSI') {
             const button = document.getElementById(buttonId);
-            if (button) {
-                button.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> SAVE TO SERVER';
-                button.disabled = false;
-                button.style.opacity = '1';
-            }
+            button.innerHTML = `<i class="fas fa-save"></i> ${text}`;
+            button.disabled = false;
         }
         
-        function updateLastUpdate() {
-            const element = document.getElementById('lastUpdate');
-            if (element) {
-                element.textContent = getCurrentTime();
-            }
+        function toggleTanggalInput() {
+            const aksi = document.getElementById('aksi').value;
+            document.getElementById('tanggalSetor').style.display = (aksi === 'setor' || aksi === 'tambahan') ? 'block' : 'none';
+            document.getElementById('tanggalTarik').style.display = aksi === 'tarik' ? 'block' : 'none';
         }
         
-        // ============================================
-        // CONFIGURATION MANAGEMENT
-        // ============================================
-        function showConfigPanel() {
-            document.getElementById('configPanel').style.display = 'block';
-            document.getElementById('configPanel').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function saveConfig() {
-            USER_CONFIG.WEB_APP_URL = document.getElementById('webAppUrl').value.trim();
-            USER_CONFIG.TELEGRAM_BOT_TOKEN = document.getElementById('telegramToken').value.trim();
-            USER_CONFIG.TELEGRAM_CHAT_ID = document.getElementById('telegramChatId').value.trim();
-            
-            if (!USER_CONFIG.WEB_APP_URL) {
-                showAlert('⚠️ Google Apps Script URL is required!', 'error');
-                return;
-            }
-            
-            USER_CONFIG.isConfigured = true;
-            
-            // Simpan ke localStorage
-            localStorage.setItem('jimpitan_user_config', JSON.stringify(USER_CONFIG));
-            
-            // Hide config panel
-            document.getElementById('configPanel').style.display = 'none';
-            
-            // Update status
-            document.getElementById('statusBadge').innerHTML = '<i class="fas fa-check-circle"></i> CONFIGURED';
-            document.getElementById('statusBadge').style.background = 'linear-gradient(45deg, #00ff88, #00cc6a)';
-            
-            showAlert('✅ Configuration saved successfully!', 'success');
-            
-            // Test connection
-            testConnection();
-        }
-        
-        function loadConfig() {
-            // Meminta user untuk upload file config
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json,.txt';
-            
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                try {
-                    const text = await file.text();
-                    const config = JSON.parse(text);
-                    
-                    USER_CONFIG = {
-                        WEB_APP_URL: config.WEB_APP_URL || '',
-                        TELEGRAM_BOT_TOKEN: config.TELEGRAM_BOT_TOKEN || '',
-                        TELEGRAM_CHAT_ID: config.TELEGRAM_CHAT_ID || '',
-                        isConfigured: true
-                    };
-                    
-                    // Update form
-                    document.getElementById('webAppUrl').value = USER_CONFIG.WEB_APP_URL;
-                    document.getElementById('telegramToken').value = USER_CONFIG.TELEGRAM_BOT_TOKEN;
-                    document.getElementById('telegramChatId').value = USER_CONFIG.TELEGRAM_CHAT_ID;
-                    
-                    // Save to localStorage
-                    localStorage.setItem('jimpitan_user_config', JSON.stringify(USER_CONFIG));
-                    
-                    showAlert('✅ Configuration loaded from file!', 'success');
-                    
-                } catch (error) {
-                    showAlert('❌ Error loading configuration file', 'error');
-                }
-            };
-            
-            input.click();
-        }
-        
-        async function testConnection() {
-            if (!USER_CONFIG.WEB_APP_URL) return;
-            
+        // ===== NASABAH FUNCTIONS =====
+        async function loadNasabahFromGitHub() {
             try {
-                const testUrl = `${USER_CONFIG.WEB_APP_URL}?action=test&t=${Date.now()}`;
-                const response = await fetch(testUrl);
-                
-                if (response.ok) {
-                    showAlert('✅ Connected to Google Apps Script!', 'success');
-                } else {
-                    showAlert('⚠️ Failed to connect to Google Apps Script', 'warning');
-                }
-            } catch (error) {
-                showAlert('❌ Connection error: ' + error.message, 'error');
-            }
-        }
-        
-        // ============================================
-        // DATA LOADING
-        // ============================================
-        async function loadNasabah() {
-            try {
-                const response = await fetch(PUBLIC_CONFIG.GITHUB_NASABAH_URL);
+                const response = await fetch(GITHUB_NASABAH_URL);
                 const text = await response.text();
                 
-                const nasabahList = text.split('\n')
+                semuaNasabah = text
+                    .split('\n')
                     .map(n => n.trim())
                     .filter(n => n && n !== '');
                 
-                const select = document.getElementById('nama');
-                select.innerHTML = '<option value="">SELECT PLAYER...</option>';
+                updateDropdownNasabah();
+                updateStats();
                 
-                nasabahList.forEach(nama => {
-                    const option = document.createElement('option');
-                    option.value = nama;
-                    option.textContent = nama;
-                    select.appendChild(option);
-                });
+                return semuaNasabah;
                 
-                console.log(`✅ Loaded ${nasabahList.length} players`);
             } catch (error) {
-                console.error('❌ Failed to load players:', error);
-                showAlert('⚠️ Using demo player data', 'warning');
-                
-                const select = document.getElementById('nama');
-                select.innerHTML = '<option value="">SELECT PLAYER...</option>';
-                ['PLAYER 1', 'PLAYER 2', 'PLAYER 3'].forEach(nama => {
-                    const option = document.createElement('option');
-                    option.value = nama;
-                    option.textContent = nama;
-                    select.appendChild(option);
-                });
+                console.error('Error loading nasabah:', error);
+                // Fallback data
+                semuaNasabah = ['BUDI SANTOSO', 'SITI AMINAH', 'AGUS WIJAYA', 'RINA DEWI', 'HENDRA KURNIAWAN'];
+                updateDropdownNasabah();
+                return semuaNasabah;
             }
         }
         
-        // ============================================
-        // FORM FUNCTIONS
-        // ============================================
-        function toggleTanggalInput() {
-            const aksi = document.getElementById('aksi').value;
-            if (aksi === 'setor') {
-                document.getElementById('tanggalSetor').style.display = 'block';
-                document.getElementById('tanggalTarik').style.display = 'none';
-            } else {
-                document.getElementById('tanggalSetor').style.display = 'none';
-                document.getElementById('tanggalTarik').style.display = 'block';
-            }
-            updateSummary();
-        }
-        
-        function updateSummary() {
-            const nama = document.getElementById('nama').value;
-            const aksi = document.getElementById('aksi').value;
-            const nominal = document.getElementById('nominal').value;
-            const keterangan = document.getElementById('keterangan').value;
+        function updateDropdownNasabah() {
+            const select = document.getElementById('nama');
+            select.innerHTML = '<option value="">Pilih Nasabah...</option>';
             
-            document.getElementById('summaryNama').textContent = nama || '-';
-            document.getElementById('summaryJenis').textContent = aksi === 'setor' ? '💰 DEPOSIT' : '💸 WITHDRAW';
-            document.getElementById('summaryNominal').textContent = nominal ? formatRupiah(nominal.replace(/\./g, '')) : '-';
+            semuaNasabah.forEach(nama => {
+                const option = document.createElement('option');
+                option.value = nama;
+                option.textContent = nama;
+                select.appendChild(option);
+            });
             
-            if (aksi === 'setor') {
-                const dari = document.getElementById('tanggal_dari').value;
-                const sampai = document.getElementById('tanggal_sampai').value;
-                document.getElementById('summaryTanggal').textContent = 
-                    (dari && sampai) ? `${formatTanggal(dari)} → ${formatTanggal(sampai)}` : '-';
-            } else {
-                const tanggal = document.getElementById('tanggal_tarik').value;
-                document.getElementById('summaryTanggal').textContent = 
-                    tanggal ? formatTanggal(tanggal) : '-';
-            }
+            document.getElementById('totalNasabah').textContent = semuaNasabah.length;
         }
         
-        // ============================================
-        // TELEGRAM NOTIFICATION
-        // ============================================
-        async function sendTelegramNotification(transaksiData) {
-            if (!USER_CONFIG.TELEGRAM_BOT_TOKEN || !USER_CONFIG.TELEGRAM_CHAT_ID) {
-                return;
-            }
+        async function syncFromGitHub() {
+            showLoading('btnSyncGitHub');
             
             try {
-                const message = `
-🎮 *${PUBLIC_CONFIG.APP_NAME} - NEW TRANSACTION*
-━━━━━━━━━━━━━━━━━━
-👤 *Player:* ${transaksiData.nama}
-🎯 *Action:* ${transaksiData.aksi === 'setor' ? '💰 DEPOSIT' : '💸 WITHDRAW'}
-💎 *Amount:* ${formatRupiah(transaksiData.nominal)}
-📅 *Date:* ${formatTanggal(transaksiData.tanggal)}
-📝 *Notes:* ${transaksiData.keterangan || '-'}
-🕐 *Time:* ${getCurrentTime()}
-━━━━━━━━━━━━━━━━━━
-                `;
-                
-                const url = `https://api.telegram.org/bot${USER_CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
-                
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: USER_CONFIG.TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Telegram API error: ${response.status}`);
-                }
-                
-                console.log('✅ Telegram notification sent');
-            } catch (error) {
-                console.error('❌ Failed to send Telegram notification:', error);
-            }
-        }
-        
-        // ============================================
-        // SAVE TRANSACTION
-        // ============================================
-        async function simpanTransaksi() {
-            // Check configuration
-            if (!USER_CONFIG.isConfigured || !USER_CONFIG.WEB_APP_URL) {
-                showAlert('⚠️ Please configure the system first!', 'error');
-                showConfigPanel();
-                return;
-            }
-            
-            // Validate form
-            const nama = document.getElementById('nama').value;
-            const aksi = document.getElementById('aksi').value;
-            const nominal = document.getElementById('nominal').value.replace(/\./g, '');
-            const keterangan = document.getElementById('keterangan').value;
-            
-            if (!nama) {
-                showAlert('⚠️ Select player first!', 'error');
-                return;
-            }
-            
-            if (!nominal || isNaN(parseInt(nominal)) || parseInt(nominal) <= 0) {
-                showAlert('⚠️ Invalid amount!', 'error');
-                return;
-            }
-            
-            const nominalNumber = parseInt(nominal);
-            let tanggal, transaksiKeterangan;
-            
-            if (aksi === 'setor') {
-                const dari = document.getElementById('tanggal_dari').value;
-                const sampai = document.getElementById('tanggal_sampai').value;
-                
-                if (!dari || !sampai) {
-                    showAlert('⚠️ Fill date period!', 'error');
-                    return;
-                }
-                
-                if (new Date(dari) > new Date(sampai)) {
-                    showAlert('⚠️ Start date cannot be greater than end date!', 'error');
-                    return;
-                }
-                
-                tanggal = dari;
-                transaksiKeterangan = keterangan || `Deposit from ${formatTanggal(dari)} to ${formatTanggal(sampai)}`;
-                
-            } else {
-                tanggal = document.getElementById('tanggal_tarik').value;
-                if (!tanggal) {
-                    showAlert('⚠️ Select withdrawal date!', 'error');
-                    return;
-                }
-                transaksiKeterangan = keterangan || 'Withdrawal transaction';
-            }
-            
-            showLoading('btnSimpan');
-            
-            try {
-                const transaksiData = {
-                    nama: nama,
-                    aksi: aksi,
-                    tanggal: tanggal,
-                    nominal: nominalNumber,
-                    keterangan: transaksiKeterangan,
-                    timestamp: new Date().toISOString(),
-                    app_version: PUBLIC_CONFIG.APP_VERSION
-                };
-                
-                // Send to Google Sheets
-                const response = await fetch(USER_CONFIG.WEB_APP_URL, {
+                const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                        action: 'simpan', 
-                        data: transaksiData,
-                        source: 'jimpitan_pro_v3'
+                        action: 'syncFromGitHub',
+                        origin: window.location.origin
                     })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    // Visual feedback
-                    document.getElementById('btnSimpan').style.background = 'linear-gradient(45deg, #00ff88, #00cc6a)';
-                    
-                    // Show success alert
-                    showAlert('🎉 Transaction saved successfully!', 'success');
-                    
-                    // Send Telegram notification
-                    await sendTelegramNotification(transaksiData);
-                    
-                    // Reset form
-                    document.getElementById('nominal').value = '';
-                    document.getElementById('keterangan').value = '';
-                    
-                    // Reset button color after delay
-                    setTimeout(() => {
-                        document.getElementById('btnSimpan').style.background = 'linear-gradient(45deg, #00d2ff, #3a7bd5)';
-                    }, 2000);
-                    
+                    showAlert(result.message, 'success');
+                    await loadNasabahFromGitHub();
                 } else {
-                    throw new Error(result.message || 'Failed to save transaction');
+                    showAlert(result.message, 'error');
                 }
                 
             } catch (error) {
-                console.error('❌ Save error:', error);
-                showAlert(`❌ Error: ${error.message}`, 'error');
-                document.getElementById('btnSimpan').style.background = 'linear-gradient(45deg, #ff4757, #ff3742)';
-                setTimeout(() => {
-                    document.getElementById('btnSimpan').style.background = 'linear-gradient(45deg, #00d2ff, #3a7bd5)';
-                }, 2000);
+                showAlert('Gagal sync: ' + error.message, 'error');
             } finally {
-                stopLoading('btnSimpan');
+                stopLoading('btnSyncGitHub', 'Sync Nasabah dari GitHub');
             }
         }
         
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        function initApp() {
-            console.log(`🎮 ${PUBLIC_CONFIG.APP_NAME} v${PUBLIC_CONFIG.APP_VERSION} Starting...`);
+        // ===== GOOGLE SHEETS FUNCTIONS =====
+        async function simpanTransaksi() {
+            const nama = document.getElementById('nama').value;
+            const aksi = document.getElementById('aksi').value;
+            const nominal = document.getElementById('nominal').value.replace(/\./g, '');
+            const keterangan = document.getElementById('keterangan').value;
             
-            // Set today's date
+            if (!nama || !nominal) {
+                showAlert('Harap isi semua field yang diperlukan', 'error');
+                return;
+            }
+            
+            const nominalNumber = parseInt(nominal);
+            if (isNaN(nominalNumber) || nominalNumber <= 0) {
+                showAlert('Nominal tidak valid', 'error');
+                return;
+            }
+            
+            let tanggal, tanggalDari, tanggalSampai;
+            
+            if (aksi === 'setor' || aksi === 'tambahan') {
+                tanggalDari = document.getElementById('tanggal_dari').value;
+                tanggalSampai = document.getElementById('tanggal_sampai').value;
+                tanggal = tanggalDari;
+                
+                if (!tanggalDari || !tanggalSampai) {
+                    showAlert('Isi tanggal dari dan sampai', 'error');
+                    return;
+                }
+                
+                if (new Date(tanggalDari) > new Date(tanggalSampai)) {
+                    showAlert('Tanggal dari tidak boleh lebih besar dari tanggal sampai', 'error');
+                    return;
+                }
+                
+            } else {
+                tanggal = document.getElementById('tanggal_tarik').value;
+                if (!tanggal) {
+                    showAlert('Isi tanggal tarik', 'error');
+                    return;
+                }
+            }
+            
+            showLoading('btnSimpan');
+            showSyncIndicator(true);
+            
+            try {
+                const transaksiData = {
+                    nama: nama,
+                    jenis: aksi,
+                    tanggal: tanggal,
+                    jumlah: nominalNumber,
+                    keterangan: keterangan || (aksi === 'setor' ? `Setoran ${formatTanggal(tanggalDari)} s.d ${formatTanggal(tanggalSampai)}` : 'Penarikan dana'),
+                    tanggal_dari: aksi === 'setor' ? tanggalDari : '',
+                    tanggal_sampai: aksi === 'setor' ? tanggalSampai : ''
+                };
+                
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        action: 'saveTransaksi',
+                        data: transaksiData,
+                        origin: window.location.origin
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Transaksi berhasil disimpan!', 'success');
+                    resetForm();
+                    updateStats();
+                } else {
+                    throw new Error(result.message || 'Gagal menyimpan');
+                }
+                
+            } catch (error) {
+                // Simpan ke local storage jika offline
+                if (!navigator.onLine) {
+                    saveToLocalStorage(transaksiData);
+                    showAlert('Disimpan lokal (offline). Akan sync saat online.', 'info');
+                } else {
+                    showAlert('Gagal menyimpan: ' + error.message, 'error');
+                }
+            } finally {
+                stopLoading('btnSimpan');
+                showSyncIndicator(false);
+            }
+        }
+        
+        function resetForm() {
+            document.getElementById('nominal').value = '';
+            document.getElementById('keterangan').value = '';
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal_dari').value = today;
+            document.getElementById('tanggal_sampai').value = today;
+            document.getElementById('tanggal_tarik').value = today;
+        }
+        
+        async function updateStats() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getStats&origin=${encodeURIComponent(window.location.origin)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('totalSaldo').textContent = result.total_saldo_formatted || formatRupiah(result.stats?.total_saldo || 0);
+                    
+                    if (result.stats?.nasabah) {
+                        document.getElementById('totalNasabah').textContent = result.stats.nasabah;
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+        
+        // ===== OFFLINE SUPPORT =====
+        function saveToLocalStorage(data) {
+            try {
+                const pendingData = JSON.parse(localStorage.getItem('pending_transactions') || '[]');
+                pendingData.push({
+                    ...data,
+                    id: Date.now(),
+                    timestamp: new Date().toISOString()
+                });
+                
+                localStorage.setItem('pending_transactions', JSON.stringify(pendingData));
+                
+                // Update badge
+                updateOfflineBadge();
+                
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+        
+        async function syncPendingData() {
+            const pendingData = JSON.parse(localStorage.getItem('pending_transactions') || '[]');
+            
+            if (pendingData.length === 0) return;
+            
+            showSyncIndicator(true);
+            
+            try {
+                for (const transaction of pendingData) {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'saveTransaksi',
+                            data: transaction,
+                            origin: window.location.origin
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Remove from pending
+                        const newPending = pendingData.filter(t => t.id !== transaction.id);
+                        localStorage.setItem('pending_transactions', JSON.stringify(newPending));
+                    }
+                }
+                
+                updateOfflineBadge();
+                showAlert('Data offline berhasil disinkronisasi', 'success');
+                
+            } catch (error) {
+                console.error('Error syncing pending data:', error);
+            } finally {
+                showSyncIndicator(false);
+            }
+        }
+        
+        function updateOfflineBadge() {
+            const pendingData = JSON.parse(localStorage.getItem('pending_transactions') || '[]');
+            if (pendingData.length > 0 && 'setAppBadge' in navigator) {
+                navigator.setAppBadge(pendingData.length);
+            }
+        }
+        
+        // ===== INITIALIZATION =====
+        async function initApp() {
+            // Check online status
+            updateOnlineStatus();
+            
+            // Load nasabah from GitHub
+            await loadNasabahFromGitHub();
+            
+            // Set tanggal default
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('tanggal_dari').value = today;
             document.getElementById('tanggal_sampai').value = today;
             document.getElementById('tanggal_tarik').value = today;
             
-            // Event listeners
-            const elements = ['nama', 'aksi', 'nominal', 'tanggal_dari', 'tanggal_sampai', 'tanggal_tarik', 'keterangan'];
-            elements.forEach(id => {
-                document.getElementById(id).addEventListener('input', updateSummary);
-                document.getElementById(id).addEventListener('change', updateSummary);
-            });
-            
-            // Auto-format nominal input
+            // Format input uang
             document.getElementById('nominal').addEventListener('input', function(e) {
                 let value = this.value.replace(/\D/g, '');
-                if (value) {
-                    this.value = parseInt(value).toLocaleString('id-ID');
-                }
-                updateSummary();
+                if (value) this.value = parseInt(value).toLocaleString('id-ID');
             });
             
-            // Load initial data
-            loadNasabah();
-            updateLastUpdate();
+            // Load stats
+            await updateStats();
             
-            // Load saved user config
-            const savedConfig = localStorage.getItem('jimpitan_user_config');
-            if (savedConfig) {
+            // Check for pending data
+            updateOfflineBadge();
+            
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
                 try {
-                    USER_CONFIG = JSON.parse(savedConfig);
-                    if (USER_CONFIG.isConfigured) {
-                        document.getElementById('statusBadge').innerHTML = '<i class="fas fa-check-circle"></i> CONFIGURED';
-                        document.getElementById('statusBadge').style.background = 'linear-gradient(45deg, #00ff88, #00cc6a)';
-                    }
-                } catch (e) {
-                    console.log('No saved config found');
+                    await navigator.serviceWorker.register('./sw.js');
+                    console.log('Service Worker registered');
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
                 }
             }
             
-            // Auto-update every 30 seconds
-            setInterval(updateLastUpdate, 30000);
-            
-            console.log('✅ App initialized successfully');
-            
-            // Show welcome message
-            setTimeout(() => {
-                showAlert(`🎮 Welcome to ${PUBLIC_CONFIG.APP_NAME}! Configure your system first.`, 'info');
-            }, 1000);
+            showAlert('Sistem Jimpitan siap digunakan!', 'success');
         }
         
-        // Start the app when page loads
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Refresh data when coming back online
+        window.addEventListener('online', () => {
+            updateStats();
+            syncPendingData();
+        });
     </script>
 </body>
 </html>
