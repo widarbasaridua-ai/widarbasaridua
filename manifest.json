@@ -1,22 +1,48 @@
 {
-  "name": "Jimpitan Digital",
+  "name": "Sistem Jimpitan Digital",
   "short_name": "Jimpitan",
-  "description": "Sistem Simpan Pinjam Digital",
-  "start_url": "/widarbasaridua/",
+  "description": "Sistem digital untuk mengelola jimpitan - REVO Version",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
-  "theme_color": "#667eea",
+  "theme_color": "#764ba2",
   "orientation": "portrait",
+  "categories": ["finance", "productivity"],
   "icons": [
     {
-      "src": "https://cdn.jsdelivr.net/npm/@mdi/svg@7.4.47/svg/bank.svg",
+      "src": "android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://cdn.jsdelivr.net/npm/@mdi/svg@7.4.47/svg/bank.svg",
+      "src": "android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Transaksi Baru",
+      "short_name": "Transaksi",
+      "description": "Buat transaksi baru",
+      "url": "./?tab=transaksi",
+      "icons": [{ "src": "favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Cek Saldo",
+      "short_name": "Saldo",
+      "description": "Cek saldo nasabah",
+      "url": "./?tab=saldo",
+      "icons": [{ "src": "favicon-32x32.png", "sizes": "32x32" }]
     }
   ]
 }
