@@ -1,1 +1,14 @@
-
+{
+  "app_name": "Sistem Jimpitan Digital",
+  "version": "2.0",
+  "backup_date": "",
+  "data": {
+    "nasabah": [],
+    "transaksi": [],
+    "settings": {
+      "google_script_url": "https://script.google.com/macros/s/AKfycbz32KOmnNuKUT06zLEEm16i5ozHq9ZKOHa88ysxtkLp55RXTKDIXiH_MYEpkEuBOS7z/exec",
+      "telegram_enabled": true,
+      "auto_backup": true
+    }
+  }
+}
