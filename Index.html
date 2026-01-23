@@ -8,135 +8,698 @@
     <!-- PWA CONFIG -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Sistem Digital untuk Manajemen Jimpitan">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="icon-192.png">
     
-    <!-- MINIMAL CSS -->
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: Arial; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height:100vh; padding:20px; }
-        .container { max-width:500px; margin:auto; background:white; border-radius:15px; padding:25px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
-        .logo { text-align:center; margin-bottom:25px; padding-bottom:15px; border-bottom:2px solid #f0f0f0; }
-        .logo span { font-size:40px; display:block; margin-bottom:10px; }
-        .tabs { display:flex; margin-bottom:25px; background:#f8f9fa; border-radius:8px; overflow:hidden; }
-        .tab { flex:1; padding:15px; text-align:center; cursor:pointer; font-weight:600; color:#666; transition:all 0.3s; border-bottom:3px solid transparent; }
-        .tab.active { color:#667eea; border-bottom-color:#667eea; background:white; }
-        #contentArea { min-height:300px; }
-        .status-bar { position:fixed; top:10px; right:10px; z-index:1000; padding:5px 10px; border-radius:15px; font-size:12px; font-weight:bold; }
-        .online { background:#27ae60; color:white; }
-        .offline { background:#e74c3c; color:white; }
-        @media (max-width:480px) { .container { padding:15px; } .tabs { flex-direction:column; } }
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            padding: 20px;
+            color: #333;
+        }
+        
+        /* CONTAINER */
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        /* HEADER */
+        .header { text-align: center; margin-bottom: 25px; }
+        .logo { font-size: 48px; margin-bottom: 10px; }
+        h1 { color: #2c3e50; font-size: 24px; font-weight: 700; }
+        .subtitle { font-size: 13px; color: #666; }
+        
+        /* TABS */
+        .tabs { 
+            display: flex; 
+            margin-bottom: 25px; 
+            background: #f8f9fa; 
+            border-radius: 12px; 
+            padding: 5px;
+        }
+        .tab { 
+            flex: 1; 
+            padding: 14px; 
+            text-align: center; 
+            cursor: pointer; 
+            color: #666; 
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .tab i { font-size: 18px; }
+        .tab.active { 
+            color: white; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* STATUS */
+        .status-bar { 
+            position: fixed; 
+            top: 15px; 
+            right: 15px; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .online { background: #27ae60; color: white; }
+        .offline { background: #e74c3c; color: white; }
+        
+        /* CONTENT */
+        #contentArea { min-height: 400px; }
+        
+        /* LOADING */
+        .loading {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* ALERT */
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        
+        /* BUTTON */
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-setor { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .btn-tarik { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        
+        /* FORM */
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-label { font-size: 13px; opacity: 0.9; }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 480px) { 
+            .container { padding: 20px; } 
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* UTILITY */
+        .text-center { text-align: center; }
+        .mt-10 { margin-top: 10px; }
+        .mt-20 { margin-top: 20px; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-between { justify-content: space-between; align-items: center; }
     </style>
 </head>
 <body>
     <!-- STATUS BAR -->
-    <div id="statusBar" class="status-bar online">🟢 ONLINE</div>
+    <div id="statusBar" class="status-bar online">
+        <i class="fas fa-wifi"></i>
+        <span id="statusText">ONLINE</span>
+    </div>
     
     <div class="container">
-        <div class="logo">
-            <span>💰</span>
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">💰</div>
             <h1>Sistem Jimpitan Digital</h1>
-            <div style="font-size:12px; color:#666;">v2.0 Optimized</div>
+            <div class="subtitle">Manajemen Jimpitan Modern</div>
         </div>
         
         <!-- TABS -->
         <div class="tabs">
-            <div class="tab active" onclick="loadTab('transaksi')">💳 Transaksi</div>
-            <div class="tab" onclick="loadTab('dashboard')">📊 Dashboard</div>
-            <div class="tab" onclick="loadTab('nasabah')">👥 Nasabah</div>
-            <div class="tab" onclick="loadTab('saldo')">💰 Saldo</div>
+            <div class="tab active" onclick="loadTab('transaksi')">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transaksi</span>
+            </div>
+            <div class="tab" onclick="loadTab('dashboard')">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="tab" onclick="loadTab('nasabah')">
+                <i class="fas fa-users"></i>
+                <span>Nasabah</span>
+            </div>
+            <div class="tab" onclick="loadTab('saldo')">
+                <i class="fas fa-wallet"></i>
+                <span>Saldo</span>
+            </div>
         </div>
         
         <!-- CONTENT AREA -->
         <div id="contentArea">
-            <div style="text-align:center; padding:50px 20px; color:#999;">
+            <div class="text-center" style="padding: 60px 20px;">
                 <div class="loading"></div>
-                <div style="margin-top:15px;">Memuat aplikasi...</div>
+                <div class="mt-20">Menyiapkan aplikasi...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL NASABAH -->
+    <div id="modalNasabah" class="modal">
+        <div class="modal-content">
+            <h2 class="text-center mb-20">Tambah Nasabah Baru</h2>
+            <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" id="inputNama" class="form-control" placeholder="Nama nasabah">
+            </div>
+            <div class="form-group">
+                <label class="form-label">No. Telepon</label>
+                <input type="text" id="inputPhone" class="form-control" placeholder="0812xxxxxxx">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Alamat</label>
+                <textarea id="inputAlamat" class="form-control" placeholder="Alamat" rows="3"></textarea>
+            </div>
+            <div class="flex gap-10">
+                <button class="btn" onclick="closeModal()" style="background: #95a5a6;">Batal</button>
+                <button class="btn" onclick="saveNasabah()">Simpan</button>
             </div>
         </div>
     </div>
 
-    <!-- CORE JS ONLY -->
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbz32KOmnNuKUT06zLEEm16i5ozHq9ZKOHa88ysxtkLp55RXTKDIXiH_MYEpkEuBOS7z/exec';
+        // ==================== KONFIGURASI ====================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbw9QF5k8rJ3RmTSbCYJ7iv7OjgojCRbXpfNUUgI1TdF31DxgSGG1tgAOB0vCVgHnoqo/exec';
         let currentTab = 'transaksi';
+        let nasabahList = [];
         
-        // ONLINE/OFFLINE DETECTION
-        function updateStatus() {
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', async () => {
+            updateConnectionStatus();
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+            await loadTab('transaksi');
+            
+            // Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js');
+            }
+        });
+        
+        // ==================== UTILITY ====================
+        function updateConnectionStatus() {
+            const isOnline = navigator.onLine;
             const statusBar = document.getElementById('statusBar');
-            statusBar.className = `status-bar ${navigator.onLine ? 'online' : 'offline'}`;
-            statusBar.innerHTML = navigator.onLine ? '🟢 ONLINE' : '🔴 OFFLINE';
+            if (isOnline) {
+                statusBar.className = 'status-bar online';
+                statusBar.innerHTML = '<i class="fas fa-wifi"></i> ONLINE';
+            } else {
+                statusBar.className = 'status-bar offline';
+                statusBar.innerHTML = '<i class="fas fa-wifi-slash"></i> OFFLINE';
+            }
         }
         
-        // LOAD TAB CONTENT
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.innerHTML = message;
+            document.getElementById('contentArea').prepend(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+        
+        function showModal() {
+            document.getElementById('modalNasabah').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('modalNasabah').style.display = 'none';
+        }
+        
+        function formatRupiah(num) {
+            return 'Rp ' + parseInt(num || 0).toLocaleString('id-ID');
+        }
+        
+        // ==================== TABS ====================
         async function loadTab(tabName) {
             currentTab = tabName;
             
-            // Update UI tabs
+            // Update tabs UI
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             
             // Show loading
             document.getElementById('contentArea').innerHTML = `
-                <div style="text-align:center; padding:30px 20px; color:#999;">
+                <div class="text-center" style="padding: 60px 20px;">
                     <div class="loading"></div>
-                    <div style="margin-top:15px;">Memuat ${tabName}...</div>
+                    <div class="mt-20">Memuat ${tabName}...</div>
+                </div>
+            `;
+            
+            // Load content
+            try {
+                switch(tabName) {
+                    case 'transaksi': await loadTransaksi(); break;
+                    case 'dashboard': await loadDashboard(); break;
+                    case 'nasabah': await loadNasabah(); break;
+                    case 'saldo': await loadSaldo(); break;
+                }
+            } catch (error) {
+                showAlert('Gagal memuat data', 'error');
+            }
+        }
+        
+        // ==================== TRANSAKSI ====================
+        async function loadTransaksi() {
+            await loadNasabahData();
+            
+            const html = `
+                <h2 class="text-center mb-20">Transaksi Baru</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Pilih Nasabah</label>
+                    <select id="selectNasabah" class="form-control">
+                        <option value="">-- Pilih --</option>
+                        ${nasabahList.map(n => `
+                            <option value="${n.nama}">${n.nama}</option>
+                        `).join('')}
+                    </select>
+                    <button onclick="showModal()" class="btn mt-10" style="background: #3498db;">
+                        <i class="fas fa-user-plus"></i> Tambah Nasabah
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jenis Transaksi</label>
+                    <select id="selectJenis" class="form-control" onchange="toggleTanggal()">
+                        <option value="">-- Pilih --</option>
+                        <option value="SETOR">Setor</option>
+                        <option value="TARIK">Tarik</option>
+                    </select>
+                </div>
+                
+                <div id="tanggalGroup" class="hidden">
+                    <div class="form-group">
+                        <label class="form-label">Tanggal</label>
+                        <input type="date" id="inputTanggal" class="form-control" value="${new Date().toISOString().split('T')[0]}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Nominal (Rp)</label>
+                    <input type="text" id="inputNominal" class="form-control" placeholder="50.000" oninput="formatInput(this)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Keterangan</label>
+                    <input type="text" id="inputKeterangan" class="form-control" placeholder="Keterangan transaksi">
+                </div>
+                
+                <button onclick="saveTransaksi()" class="btn" id="btnSave">
+                    <i class="fas fa-save"></i> Simpan Transaksi
+                </button>
+            `;
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+        
+        function toggleTanggal() {
+            const jenis = document.getElementById('selectJenis').value;
+            const btn = document.getElementById('btnSave');
+            if (jenis === 'SETOR') {
+                document.getElementById('tanggalGroup').classList.remove('hidden');
+                btn.className = 'btn btn-setor';
+                btn.innerHTML = '<i class="fas fa-upload"></i> Simpan Setoran';
+            } else if (jenis === 'TARIK') {
+                document.getElementById('tanggalGroup').classList.remove('hidden');
+                btn.className = 'btn btn-tarik';
+                btn.innerHTML = '<i class="fas fa-download"></i> Simpan Penarikan';
+            } else {
+                document.getElementById('tanggalGroup').classList.add('hidden');
+                btn.className = 'btn';
+                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Transaksi';
+            }
+        }
+        
+        function formatInput(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value) input.value = parseInt(value).toLocaleString('id-ID');
+        }
+        
+        // ==================== DASHBOARD ====================
+        async function loadDashboard() {
+            try {
+                const response = await fetch(`${API_URL}?action=getStats`);
+                const data = await response.json();
+                
+                let stats = '';
+                if (data.status === 'success') {
+                    stats = `
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">${data.totalNasabah || 0}</div>
+                                <div class="stat-label">Total Nasabah</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${data.transaksiHariIni || 0}</div>
+                                <div class="stat-label">Transaksi Hari Ini</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${formatRupiah(data.totalSetorHariIni)}</div>
+                                <div class="stat-label">Setor Hari Ini</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${formatRupiah(data.totalTarikHariIni)}</div>
+                                <div class="stat-label">Tarik Hari Ini</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                const html = `
+                    <h2 class="text-center mb-20">Dashboard</h2>
+                    ${stats}
+                    <div class="text-center mt-20">
+                        <button onclick="loadTab('dashboard')" class="btn">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('contentArea').innerHTML = html;
+            } catch (error) {
+                throw error;
+            }
+        }
+        
+        // ==================== NASABAH ====================
+        async function loadNasabah() {
+            await loadNasabahData();
+            
+            const html = `
+                <div class="flex-between mb-20">
+                    <h2>Daftar Nasabah</h2>
+                    <div class="flex gap-10">
+                        <button onclick="showModal()" class="btn" style="padding: 10px 15px; background: #3498db;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button onclick="loadNasabahData()" class="btn" style="padding: 10px 15px; background: #95a5a6;">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" id="searchNasabah" class="form-control" placeholder="Cari nasabah..." oninput="searchNasabah()">
+                </div>
+                
+                <div id="nasabahContainer">
+                    ${nasabahList.length === 0 ? `
+                        <div class="text-center" style="padding: 40px 20px; color: #999;">
+                            Belum ada nasabah terdaftar
+                        </div>
+                    ` : nasabahList.map(n => `
+                        <div class="form-group" style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                            <div class="flex-between">
+                                <div>
+                                    <strong>${n.nama}</strong>
+                                    <div style="font-size: 12px; color: #666;">
+                                        ${n.no_hp || ''} ${n.alamat ? ` - ${n.alamat}` : ''}
+                                    </div>
+                                </div>
+                                <div style="font-size: 11px; color: #667eea;">
+                                    ${n.id_nasabah || ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+        
+        function searchNasabah() {
+            const search = document.getElementById('searchNasabah').value.toLowerCase();
+            const items = document.querySelectorAll('#nasabahContainer > div');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(search) ? 'block' : 'none';
+            });
+        }
+        
+        // ==================== SALDO ====================
+        async function loadSaldo() {
+            await loadNasabahData();
+            
+            const html = `
+                <h2 class="text-center mb-20">Cek Saldo</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Pilih Nasabah</label>
+                    <select id="selectSaldo" class="form-control" onchange="getSaldo()">
+                        <option value="">-- Pilih --</option>
+                        ${nasabahList.map(n => `
+                            <option value="${n.nama}">${n.nama}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                
+                <div id="saldoResult"></div>
+            `;
+            
+            document.getElementById('contentArea').innerHTML = html;
+        }
+        
+        // ==================== DATA FUNCTIONS ====================
+        async function loadNasabahData() {
+            try {
+                const response = await fetch(`${API_URL}?action=getNasabah`);
+                const data = await response.json();
+                if (data.status === 'success') {
+                    nasabahList = data.data || [];
+                }
+            } catch (error) {
+                console.error('Error loading nasabah:', error);
+            }
+        }
+        
+        async function saveNasabah() {
+            const nama = document.getElementById('inputNama').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const alamat = document.getElementById('inputAlamat').value.trim();
+            
+            if (!nama) {
+                showAlert('Nama harus diisi', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({
+                        action: 'addNasabah',
+                        nama: nama,
+                        phone: phone,
+                        alamat: alamat
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    closeModal();
+                    showAlert('Nasabah berhasil ditambahkan', 'success');
+                    await loadNasabahData();
+                    if (currentTab === 'transaksi' || currentTab === 'nasabah') {
+                        await loadTab(currentTab);
+                    }
+                } else {
+                    showAlert(result.message || 'Gagal menyimpan', 'error');
+                }
+            } catch (error) {
+                showAlert('Koneksi error', 'error');
+            }
+        }
+        
+        async function saveTransaksi() {
+            const nama = document.getElementById('selectNasabah').value;
+            const jenis = document.getElementById('selectJenis').value;
+            const nominal = document.getElementById('inputNominal').value.replace(/\D/g, '');
+            const keterangan = document.getElementById('inputKeterangan').value.trim();
+            const tanggal = document.getElementById('inputTanggal')?.value;
+            
+            if (!nama || !jenis || !nominal) {
+                showAlert('Harap lengkapi data', 'error');
+                return;
+            }
+            
+            try {
+                const data = {
+                    action: 'addTransaksi',
+                    nama: nama,
+                    jenis: jenis,
+                    nominal: nominal,
+                    keterangan: keterangan || '-'
+                };
+                
+                if (jenis === 'SETOR') {
+                    data.tanggal_setor = `${tanggal}|${tanggal}`;
+                } else {
+                    data.tanggal_tarik = tanggal;
+                }
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams(data)
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    showAlert('Transaksi berhasil disimpan', 'success');
+                    // Reset form
+                    document.getElementById('selectNasabah').value = '';
+                    document.getElementById('selectJenis').value = '';
+                    document.getElementById('inputNominal').value = '';
+                    document.getElementById('inputKeterangan').value = '';
+                    document.getElementById('tanggalGroup').classList.add('hidden');
+                } else {
+                    showAlert(result.message || 'Gagal menyimpan', 'error');
+                }
+            } catch (error) {
+                showAlert('Koneksi error', 'error');
+            }
+        }
+        
+        async function getSaldo() {
+            const nama = document.getElementById('selectSaldo').value;
+            if (!nama) return;
+            
+            document.getElementById('saldoResult').innerHTML = `
+                <div class="text-center" style="padding: 30px;">
+                    <div class="loading"></div>
                 </div>
             `;
             
             try {
-                // Fetch UI from Apps Script
-                const response = await fetch(`${API_URL}?action=getUI&tab=${tabName}`);
-                const result = await response.json();
+                const response = await fetch(`${API_URL}?action=getSaldo&nama=${encodeURIComponent(nama)}`);
+                const data = await response.json();
                 
-                if (result.status === 'success') {
-                    document.getElementById('contentArea').innerHTML = result.html;
-                    
-                    // Load tab-specific JS
-                    if (result.js) {
-                        eval(result.js);
-                    }
-                    
-                    // Initialize with data
-                    if (result.data && window.initTab) {
-                        window.initTab(result.data);
-                    }
+                if (data.status === 'success') {
+                    const saldo = data.data;
+                    document.getElementById('saldoResult').innerHTML = `
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px;">
+                            <div class="text-center">
+                                <div style="font-size: 14px;">Saldo Nasabah</div>
+                                <div style="font-size: 36px; font-weight: 700; margin: 15px 0;">${formatRupiah(saldo.saldo_akhir)}</div>
+                                <div>${nama}</div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 12px;">Total Setor</div>
+                                    <div style="font-size: 16px; font-weight: 600;">${formatRupiah(saldo.total_setor)}</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 12px;">Total Tarik</div>
+                                    <div style="font-size: 16px; font-weight: 600;">${formatRupiah(saldo.total_tarik)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 } else {
-                    showError('Gagal memuat konten');
+                    showAlert(data.message || 'Gagal mengambil saldo', 'error');
                 }
             } catch (error) {
-                showError('Koneksi error. Coba refresh.');
+                showAlert('Koneksi error', 'error');
             }
         }
         
-        // UTILITY FUNCTIONS
-        function showError(msg) {
-            document.getElementById('contentArea').innerHTML = `
-                <div style="background:#f8d7da; color:#721c24; padding:15px; border-radius:8px; text-align:center;">
-                    ❌ ${msg}
-                    <button onclick="loadTab(currentTab)" style="margin-top:10px; padding:8px 15px; background:#667eea; color:white; border:none; border-radius:5px;">
-                        Coba Lagi
-                    </button>
-                </div>
-            `;
-        }
-        
-        function formatRupiah(num) {
-            return 'Rp ' + parseInt(num).toLocaleString('id-ID');
-        }
-        
-        // INITIALIZE
-        window.addEventListener('load', () => {
-            updateStatus();
-            window.addEventListener('online', updateStatus);
-            window.addEventListener('offline', updateStatus);
-            loadTab('transaksi');
-        });
-        
-        // SERVICE WORKER
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js');
-        }
+        // Export functions to global scope
+        window.loadTab = loadTab;
+        window.toggleTanggal = toggleTanggal;
+        window.formatInput = formatInput;
+        window.showModal = showModal;
+        window.closeModal = closeModal;
+        window.saveNasabah = saveNasabah;
+        window.saveTransaksi = saveTransaksi;
+        window.getSaldo = getSaldo;
+        window.searchNasabah = searchNasabah;
     </script>
 </body>
 </html>
