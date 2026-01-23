@@ -1,17 +1,22 @@
 {
   "name": "Sistem Jimpitan Digital",
   "short_name": "JimpitanApp",
-  "description": "Aplikasi digital untuk sistem jimpitan",
-  "start_url": "/widarbasaridua/",
+  "description": "Aplikasi Jimpitan Digital - Widar Basari",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
-  "theme_color": "#667eea",
-  "orientation": "portrait",
+  "theme_color": "#764ba2",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4b0.png",
-      "sizes": "64x64",
-      "type": "image/png"
+      "src": "https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/svg/1f4b0.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTI4IiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMTQyXzExOTUpIi8+CjxwYXRoIGQ9Ik0xMjggNTEyQzU3LjMwNzUgNTEyIDAgNDU0LjY5MiAwIDM4NFYxMjhDMCA1Ny4zMDc2IDU3LjMwNzUgMCAxMjggMEgzODRDNDU0LjY5MiAwIDUxMiA1Ny4zMDc2IDUxMiAxMjhWMzg0QzUxMiA0NTQuNjkyIDQ1NC42OTIgNTEyIDM4NCA1MTJIMTI4WiIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzE0Ml8xMTk1KSIvPgo8cGF0aCBkPSJNMzM4Ljg0OSAyMDQuMDc1VjE2OS4xNjdIMjA1LjQwN0MxOTguNzM2IDE2OS4xNjcgMTkzLjMxMSAxNzQuNTkyIDE5My4zMTEgMTgxLjI2MlYzMDcuMTM3QzE5My4zMTEgMzEzLjgwNyAxOTguNzM2IDMxOS4yMzIgMjA1LjQwNyAzMTkuMjMySDMwNi40MTlDMzEzLjA5IDMxOS4yMzIgMzE4LjUxNSAzMTMuODA3IDMxOC41MTUgMzA3LjEzN1YyNzIuMjI5SDMzOC44NDlDMzQ1LjUyIDI3Mi4yMjkgMzUwLjk0NSAyNjYuODA0IDM1MC45NDUgMjYwLjEzM1YyMTYuMTcxQzM1MC45NDUgMjA5LjUwMSAzNDUuNTIgMjA0LjA3NSAzMzguODQ5IDIwNC4wNzVaTTIyNy44NzYgMjI0LjUyOEgyNTguODA0QzI2NS40NzUgMjI0LjUyOCAyNzAuOSAyMjkuOTUzIDI3MC45IDIzNi42MjRWMjcwLjU2N0gyODcuMjc2QzI5My45NDcgMjcwLjU2NyAyOTkuMzcyIDI3NS45OTIgMjk5LjM3MiAyODIuNjYzVjMwNy4xMzdDMjk5LjM3MiAzMTMuODA3IDI5My45NDcgMzE5LjIzMiAyODcuMjc2IDMxOS4yMzJIMjI3Ljg3NkMyMjEuMjA2IDMxOS4yMzIgMjE1Ljc4MSAzMTMuODA3IDIxNS43ODEgMzA3LjEzN1YyMzYuNjI0QzIxNS43ODEgMjI5Ljk1MyAyMjEuMjA2IDIyNC41MjggMjI3Ljg3NiAyMjQuNTI4WiIgZmlsbD0id2hpdGUiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8xNDJfMTE5NSIgeDE9IjI1NiIgeTE9IjAiIHgyPSIyNTYiIHkyPSI1MTIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzY2N0VFQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3NjRCQTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDFfbGluZWFyXzE0Ml8xMTk1IiB4MT0iMjU2IiB5MT0iMCIgeDI9IjI1NiIgeTI9IjUxMiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjY3RUVBIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzc2NEJBMiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
     }
   ]
 }
