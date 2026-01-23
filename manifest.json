@@ -2,9 +2,16 @@
   "name": "Sistem Jimpitan Digital",
   "short_name": "JimpitanApp",
   "description": "Aplikasi digital untuk sistem jimpitan",
-  "start_url": "/",
+  "start_url": "/widarbasaridua/",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4b0.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
 }
