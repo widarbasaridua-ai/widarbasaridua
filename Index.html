@@ -3,990 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Jimpitan Digital - REVO</title>
+    <title>Sistem Jimpitan Digital</title>
     
-    <!-- ==================== PWA CONFIGURATION ==================== -->
+    <!-- PWA CONFIG -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Jimpitan Digital">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="favicon.ico">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <!-- ==================== END PWA CONFIG ==================== -->
     
+    <!-- MINIMAL CSS -->
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
-        .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .logo { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
-        .logo span { font-size: 40px; display: block; margin-bottom: 10px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        h1 { color: #2c3e50; font-size: 24px; font-weight: 600; }
-        h2 { color: #2c3e50; font-size: 20px; font-weight: 600; margin-bottom: 15px; }
-        
-        /* Stats Cards */
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 25px; }
-        .stat-card { background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #e9ecef; }
-        .stat-value { font-size: 24px; font-weight: bold; color: #667eea; line-height: 1.2; }
-        .stat-label { font-size: 12px; color: #666; margin-top: 5px; }
-        
-        /* Tabs */
-        .tabs { display: flex; margin-bottom: 25px; background: #f8f9fa; border-radius: 8px; overflow: hidden; }
-        .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 600; color: #666; transition: all 0.3s; border-bottom: 3px solid transparent; }
-        .tab:hover { background: #e9ecef; color: #667eea; }
-        .tab.active { color: #667eea; border-bottom-color: #667eea; background: white; }
-        
-        /* Tab Content */
-        .tab-content { display: none; animation: fadeIn 0.3s; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Forms */
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 14px; }
-        label.required::after { content: " *"; color: #e74c3c; }
-        input, select, textarea { width: 100%; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 15px; transition: all 0.3s; background: #fafafa; font-family: inherit; }
-        select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; padding-right: 45px; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #667eea; background: white; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
-        textarea { min-height: 80px; resize: vertical; }
-        
-        /* Date Groups */
-        .date-group { display: flex; gap: 10px; }
-        .date-group > div { flex: 1; }
-        
-        /* Buttons */
-        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-        .btn:active { transform: translateY(0); }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
-        .btn-setor { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
-        .btn-tarik { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
-        .btn-add { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-        .btn-secondary { background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%); }
-        .btn-small { padding: 8px 15px; font-size: 14px; width: auto; }
-        
-        /* Alerts */
-        .alert { padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
-        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-        
-        /* Loading Spinner */
-        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Utility Classes */
-        .hint { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; }
-        .text-center { text-align: center; }
-        .mt-10 { margin-top: 10px; }
-        .mt-20 { margin-top: 20px; }
-        .mb-10 { margin-bottom: 10px; }
-        .mb-20 { margin-bottom: 20px; }
-        .flex { display: flex; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .gap-10 { gap: 10px; }
-        .hidden { display: none; }
-        
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: white; padding: 30px; border-radius: 15px; width: 100%; max-width: 400px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-        
-        /* Saldo Cards */
-        .saldo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .saldo-card { text-align: center; padding: 12px 8px; background: #f8f9fa; border-radius: 6px; }
-        .saldo-label { font-size: 11px; color: #666; }
-        .saldo-value { font-size: 14px; font-weight: bold; }
-        
-        /* Nasabah List */
-        .nasabah-list { max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; margin-top: 10px; background: #fafafa; }
-        .nasabah-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid #3498db; }
-        
-        /* Mobile Responsive */
-        @media (max-width: 480px) { 
-            .container { padding: 15px; } 
-            .date-group { flex-direction: column; gap: 15px; } 
-            .stats-grid { grid-template-columns: 1fr; gap: 15px; } 
-            .tabs { flex-direction: column; }
-            .saldo-grid { grid-template-columns: 1fr; }
-        }
-        
-        /* PWA Fullscreen */
-        @media all and (display-mode: standalone) {
-            body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-            .container { max-width: 100%; border-radius: 0; min-height: 100vh; padding: 15px; }
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: Arial; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height:100vh; padding:20px; }
+        .container { max-width:500px; margin:auto; background:white; border-radius:15px; padding:25px; box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+        .logo { text-align:center; margin-bottom:25px; padding-bottom:15px; border-bottom:2px solid #f0f0f0; }
+        .logo span { font-size:40px; display:block; margin-bottom:10px; }
+        .tabs { display:flex; margin-bottom:25px; background:#f8f9fa; border-radius:8px; overflow:hidden; }
+        .tab { flex:1; padding:15px; text-align:center; cursor:pointer; font-weight:600; color:#666; transition:all 0.3s; border-bottom:3px solid transparent; }
+        .tab.active { color:#667eea; border-bottom-color:#667eea; background:white; }
+        #contentArea { min-height:300px; }
+        .status-bar { position:fixed; top:10px; right:10px; z-index:1000; padding:5px 10px; border-radius:15px; font-size:12px; font-weight:bold; }
+        .online { background:#27ae60; color:white; }
+        .offline { background:#e74c3c; color:white; }
+        @media (max-width:480px) { .container { padding:15px; } .tabs { flex-direction:column; } }
     </style>
 </head>
 <body>
+    <!-- STATUS BAR -->
+    <div id="statusBar" class="status-bar online">🟢 ONLINE</div>
+    
     <div class="container">
         <div class="logo">
             <span>💰</span>
-            <h1>Sistem Jimpitan Digital - REVO</h1>
-            <div class="hint">v2.0 | Terhubung dengan Google Sheets & Telegram</div>
+            <h1>Sistem Jimpitan Digital</h1>
+            <div style="font-size:12px; color:#666;">v2.0 Optimized</div>
         </div>
         
-        <!-- Stats Dashboard -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value" id="totalNasabah">0</div>
-                <div class="stat-label">Total Nasabah</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="transaksiHariIni">0</div>
-                <div class="stat-label">Transaksi Hari Ini</div>
-            </div>
-        </div>
-        
-        <!-- Alert Container -->
-        <div id="alert"></div>
-        
-        <!-- Tabs Navigation -->
+        <!-- TABS -->
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('transaksi')">💳 Transaksi</div>
-            <div class="tab" onclick="switchTab('nasabah')">👥 Nasabah</div>
-            <div class="tab" onclick="switchTab('saldo')">💰 Saldo</div>
+            <div class="tab active" onclick="loadTab('transaksi')">💳 Transaksi</div>
+            <div class="tab" onclick="loadTab('dashboard')">📊 Dashboard</div>
+            <div class="tab" onclick="loadTab('nasabah')">👥 Nasabah</div>
+            <div class="tab" onclick="loadTab('saldo')">💰 Saldo</div>
         </div>
         
-        <!-- Transaksi Tab -->
-        <div id="tab-transaksi" class="tab-content active">
-            <form id="transaksiForm">
-                <div class="form-group">
-                    <label for="namaNasabah" class="required">Nama Nasabah</label>
-                    <select id="namaNasabah" required>
-                        <option value="">-- Pilih Nasabah --</option>
-                    </select>
-                    <div class="hint">Pilih nasabah dari daftar terdaftar</div>
-                    <div class="flex-between mt-10">
-                        <button type="button" class="btn btn-add btn-small" onclick="showAddNasabahModal()">+ Tambah Baru</button>
-                        <button type="button" class="btn btn-secondary btn-small" onclick="refreshDropdown()">🔄 Refresh</button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="jenis" class="required">Jenis Transaksi</label>
-                    <select id="jenis" required onchange="toggleTanggalInput()">
-                        <option value="">-- Pilih Jenis --</option>
-                        <option value="SETOR">Setor Harian</option>
-                        <option value="TARIK">Tarik Dana</option>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="tanggalSetorGroup" style="display: none;">
-                    <label class="required">Periode Setoran</label>
-                    <div class="date-group">
-                        <div><input type="date" id="tanggal_dari" required><div class="hint">Dari Tanggal</div></div>
-                        <div><input type="date" id="tanggal_sampai" required><div class="hint">Sampai Tanggal</div></div>
-                    </div>
-                </div>
-                
-                <div class="form-group" id="tanggalTarikGroup" style="display: none;">
-                    <label for="tanggal_tarik" class="required">Tanggal Penarikan</label>
-                    <input type="date" id="tanggal_tarik" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="nominal" class="required">Nominal (Rp)</label>
-                    <input type="text" id="nominal" placeholder="Contoh: 50.000" required oninput="formatRupiahInput(this)">
-                    <div class="hint">Masukkan nominal dalam Rupiah</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="keterangan">Keterangan (Opsional)</label>
-                    <input type="text" id="keterangan" placeholder="Contoh: Setoran minggu ke-1">
-                </div>
-                
-                <button type="button" id="btnSimpan" class="btn" onclick="simpanTransaksi()">
-                    <span id="btnSimpanText">SIMPAN TRANSAKSI</span>
-                </button>
-            </form>
-        </div>
-        
-        <!-- Nasabah Tab -->
-        <div id="tab-nasabah" class="tab-content">
-            <div class="flex-between mb-10">
-                <h2>Daftar Nasabah</h2>
-                <div class="flex gap-10">
-                    <button type="button" class="btn btn-add btn-small" onclick="showAddNasabahModal()">+ Baru</button>
-                    <button type="button" class="btn btn-secondary btn-small" onclick="refreshNasabah()">🔄</button>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <input type="text" id="searchNasabah" placeholder="🔍 Cari nama nasabah..." oninput="filterNasabahList()">
-            </div>
-            
-            <div id="nasabahListContainer" class="nasabah-list">
-                <div class="text-center" style="padding: 40px 20px; color: #999;">Memuat daftar nasabah...</div>
-            </div>
-            
-            <div class="text-center mt-20">
-                <div class="hint">Total: <span id="nasabahCount" style="font-weight: bold;">0</span> nasabah terdaftar</div>
-            </div>
-        </div>
-        
-        <!-- Saldo Tab -->
-        <div id="tab-saldo" class="tab-content">
-            <h2>Cek Saldo Nasabah</h2>
-            
-            <div class="form-group">
-                <label>Pilih Nasabah</label>
-                <select id="namaNasabahSaldo" onchange="loadSaldoFromDropdown()">
-                    <option value="">-- Pilih Nasabah --</option>
-                </select>
-                <div class="hint">Pilih nasabah untuk melihat detail saldo</div>
-            </div>
-            
-            <div id="saldoResult" class="hidden">
-                <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
-                    <div class="flex-between">
-                        <strong id="saldoNama">-</strong>
-                        <button type="button" onclick="refreshSaldoDetail()" class="btn-small" style="background: none; color: #667eea; padding: 5px;">🔄</button>
-                    </div>
-                </div>
-                
-                <div class="saldo-grid">
-                    <div class="saldo-card">
-                        <div class="saldo-label">Total Setor</div>
-                        <div class="saldo-value" style="color: #27ae60;" id="totalSetor">Rp 0</div>
-                    </div>
-                    <div class="saldo-card">
-                        <div class="saldo-label">Total Tarik</div>
-                        <div class="saldo-value" style="color: #e74c3c;" id="totalTarik">Rp 0</div>
-                    </div>
-                    <div class="saldo-card">
-                        <div class="saldo-label">Saldo Akhir</div>
-                        <div class="saldo-value" id="saldoAkhir">Rp 0</div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-20">
-                    <div class="hint">Terakhir update: <span id="lastUpdateSaldo">-</span></div>
-                </div>
-            </div>
-            
-            <div id="noSaldoResult">
-                <div class="text-center" style="padding: 40px 20px; color: #999;">
-                    <div>Pilih nasabah dari dropdown untuk melihat saldo</div>
-                    <div class="hint mt-10">Saldo otomatis terupdate setelah transaksi</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Add Nasabah Modal -->
-    <div id="addNasabahModal" class="modal">
-        <div class="modal-content">
-            <h2>Tambah Nasabah Baru</h2>
-            
-            <div class="form-group">
-                <label class="required">Nama Lengkap</label>
-                <input type="text" id="newNama" placeholder="Nama lengkap nasabah" required>
-            </div>
-            
-            <div class="form-group">
-                <label>No. Telepon (Opsional)</label>
-                <input type="text" id="newPhone" placeholder="0812xxxxxxx">
-            </div>
-            
-            <div class="form-group">
-                <label>Alamat (Opsional)</label>
-                <textarea id="newAlamat" placeholder="Alamat lengkap nasabah" rows="3"></textarea>
-            </div>
-            
-            <div class="flex gap-10 mt-20">
-                <button type="button" class="btn btn-secondary" onclick="closeAddNasabahModal()">Batal</button>
-                <button type="button" class="btn btn-add" onclick="addNewNasabah()">Simpan</button>
+        <!-- CONTENT AREA -->
+        <div id="contentArea">
+            <div style="text-align:center; padding:50px 20px; color:#999;">
+                <div class="loading"></div>
+                <div style="margin-top:15px;">Memuat aplikasi...</div>
             </div>
         </div>
     </div>
 
+    <!-- CORE JS ONLY -->
     <script>
-        // ==================== KONFIGURASI ====================
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz32KOmnNuKUT06zLEEm16i5ozHq9ZKOHa88ysxtkLp55RXTKDIXiH_MYEpkEuBOS7z/exec';
-        
-        // ==================== VARIABEL GLOBAL ====================
-        let nasabahList = [];
-        let filteredNasabahList = [];
+        const API_URL = 'https://script.google.com/macros/s/AKfycbz32KOmnNuKUT06zLEEm16i5ozHq9ZKOHa88ysxtkLp55RXTKDIXiH_MYEpkEuBOS7z/exec';
         let currentTab = 'transaksi';
         
-        // ==================== INISIALISASI ====================
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set tanggal default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('tanggal_dari').value = today;
-            document.getElementById('tanggal_sampai').value = today;
-            document.getElementById('tanggal_tarik').value = today;
-            
-            // Event Listeners
-            document.getElementById('nominal').addEventListener('blur', function(e) {
-                formatRupiahInput(e.target);
-            });
-            
-            // Load data awal
-            initializeApp();
-            
-            // Auto refresh setiap 30 detik
-            setInterval(loadStats, 30000);
-        });
-        
-        // Inisialisasi aplikasi
-        async function initializeApp() {
-            try {
-                await loadNasabahForDropdown();
-                await loadStats();
-                showAlert('✅ Sistem siap digunakan!', 'success');
-            } catch (error) {
-                showAlert('⚠️ Gagal memuat data awal', 'warning');
-            }
+        // ONLINE/OFFLINE DETECTION
+        function updateStatus() {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.className = `status-bar ${navigator.onLine ? 'online' : 'offline'}`;
+            statusBar.innerHTML = navigator.onLine ? '🟢 ONLINE' : '🔴 OFFLINE';
         }
         
-        // ==================== FUNGSI UTILITAS ====================
-        
-        // Format input rupiah
-        function formatRupiahInput(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value) {
-                input.value = parseInt(value).toLocaleString('id-ID');
-            }
-        }
-        
-        // Ambil nilai numerik dari format rupiah
-        function getNumericValue(formattedValue) {
-            return parseInt(formattedValue.toString().replace(/\D/g, '') || 0);
-        }
-        
-        // Format angka ke rupiah
-        function formatRupiah(angka) {
-            if (!angka) angka = 0;
-            return 'Rp ' + parseInt(angka).toLocaleString('id-ID');
-        }
-        
-        // Tampilkan alert
-        function showAlert(message, type = 'success') {
-            const alertDiv = document.getElementById('alert');
-            alertDiv.className = `alert ${type}`;
-            alertDiv.innerHTML = message;
-            
-            if (type !== 'warning' && type !== 'info') {
-                setTimeout(() => {
-                    alertDiv.innerHTML = '';
-                    alertDiv.className = '';
-                }, 5000);
-            }
-        }
-        
-        // ==================== TAB SYSTEM ====================
-        
-        // Switch tab
-        function switchTab(tabName) {
+        // LOAD TAB CONTENT
+        async function loadTab(tabName) {
             currentTab = tabName;
             
-            // Update tab UI
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            // Update UI tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
             
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            // Aktifkan tab yang dipilih
-            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            const tabContent = document.getElementById(`tab-${tabName}`);
-            tabContent.classList.add('active');
-            tabContent.style.display = 'block';
-            
-            // Load data jika diperlukan
-            if (tabName === 'nasabah') {
-                loadNasabahList();
-            } else if (tabName === 'saldo') {
-                document.getElementById('noSaldoResult').style.display = 'block';
-                document.getElementById('saldoResult').style.display = 'none';
-                populateDropdown('namaNasabahSaldo');
-            }
-        }
-        
-        // ==================== DATA MANAGEMENT ====================
-        
-        // Load data nasabah untuk dropdown
-        async function loadNasabahForDropdown() {
-            try {
-                showAlert('Memuat data nasabah...', 'info');
-                
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getNasabah`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    nasabahList = data.data || [];
-                    filteredNasabahList = [...nasabahList];
-                    
-                    // Update stat
-                    document.getElementById('totalNasabah').textContent = nasabahList.length;
-                    
-                    // Populate dropdowns
-                    populateDropdown('namaNasabah');
-                    populateDropdown('namaNasabahSaldo');
-                    
-                    // Update UI jika di tab nasabah
-                    if (currentTab === 'nasabah') {
-                        loadNasabahList();
-                    }
-                    
-                    return true;
-                } else {
-                    showAlert(`❌ Gagal memuat data nasabah`, 'error');
-                    return false;
-                }
-            } catch (error) {
-                showAlert('❌ Gagal memuat data. Cek koneksi internet.', 'error');
-                return false;
-            }
-        }
-        
-        // Populate dropdown dengan data nasabah
-        function populateDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            if (!dropdown) return;
-            
-            // Simpan value yang sedang dipilih
-            const currentValue = dropdown.value;
-            
-            // Clear existing options kecuali yang pertama
-            dropdown.innerHTML = '<option value="">-- Pilih Nasabah --</option>';
-            
-            // Add options dari nasabahList
-            nasabahList.forEach(nasabah => {
-                const option = document.createElement('option');
-                option.value = nasabah.nama;
-                option.textContent = nasabah.nama;
-                if (nasabah.no_hp) {
-                    option.textContent += ` (${nasabah.no_hp})`;
-                }
-                dropdown.appendChild(option);
-            });
-            
-            // Restore previous selection if still exists
-            if (currentValue) {
-                dropdown.value = currentValue;
-            }
-            
-            // Tambah option "Tambah Nasabah Baru"
-            const addOption = document.createElement('option');
-            addOption.value = 'add_new';
-            addOption.textContent = '➕ Tambah Nasabah Baru...';
-            addOption.style.color = '#3498db';
-            addOption.style.fontWeight = 'bold';
-            dropdown.appendChild(addOption);
-            
-            // Event listener untuk option tambah baru
-            dropdown.addEventListener('change', function() {
-                if (this.value === 'add_new') {
-                    this.value = '';
-                    showAddNasabahModal();
-                }
-            });
-        }
-        
-        // Refresh dropdown
-        function refreshDropdown() {
-            loadNasabahForDropdown();
-        }
-        
-        // ==================== STATS & DASHBOARD ====================
-        
-        // Load stats
-        async function loadStats() {
-            try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getStats`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    document.getElementById('totalNasabah').textContent = data.totalNasabah || 0;
-                    document.getElementById('transaksiHariIni').textContent = data.transaksiHariIni || 0;
-                }
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
-        
-        // ==================== NASABAH MANAGEMENT ====================
-        
-        // Load daftar nasabah untuk tab nasabah
-        function loadNasabahList() {
-            const container = document.getElementById('nasabahListContainer');
-            const countElement = document.getElementById('nasabahCount');
-            
-            if (filteredNasabahList.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center" style="padding: 40px 20px; color: #999;">
-                        <div>Belum ada nasabah terdaftar</div>
-                        <button type="button" class="btn btn-add mt-10" onclick="showAddNasabahModal()" 
-                                style="width: auto; padding: 10px 20px;">
-                            + Tambah Nasabah Pertama
-                        </button>
-                    </div>
-                `;
-                countElement.textContent = '0';
-                return;
-            }
-            
-            let html = '';
-            
-            filteredNasabahList.forEach((nasabah) => {
-                html += `
-                    <div class="nasabah-item">
-                        <div>
-                            <div style="font-weight: 600; color: #2c3e50;">${nasabah.nama}</div>
-                            <div style="font-size: 11px; color: #666;">
-                                ${nasabah.no_hp ? `📱 ${nasabah.no_hp}` : ''}
-                                ${nasabah.alamat ? `📍 ${nasabah.alamat}` : ''}
-                            </div>
-                        </div>
-                        <div style="font-size: 10px; color: #999; background: #f0f0f0; padding: 2px 6px; border-radius: 10px;">
-                            ID: ${nasabah.id_nasabah || 'N/A'}
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-            countElement.textContent = filteredNasabahList.length;
-        }
-        
-        // Filter daftar nasabah
-        function filterNasabahList() {
-            const searchTerm = document.getElementById('searchNasabah').value.toLowerCase();
-            
-            if (!searchTerm) {
-                filteredNasabahList = [...nasabahList];
-            } else {
-                filteredNasabahList = nasabahList.filter(nasabah => 
-                    nasabah.nama.toLowerCase().includes(searchTerm) ||
-                    (nasabah.no_hp && nasabah.no_hp.includes(searchTerm)) ||
-                    (nasabah.alamat && nasabah.alamat.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            loadNasabahList();
-        }
-        
-        // Refresh data nasabah
-        function refreshNasabah() {
-            loadNasabahForDropdown();
-        }
-        
-        // ==================== MODAL NASABAH ====================
-        
-        // Tampilkan modal tambah nasabah
-        function showAddNasabahModal(prefillName = '') {
-            const modal = document.getElementById('addNasabahModal');
-            modal.style.display = 'flex';
-            
-            document.getElementById('newNama').value = prefillName || '';
-            document.getElementById('newPhone').value = '';
-            document.getElementById('newAlamat').value = '';
-            
-            // Focus ke input nama
-            setTimeout(() => {
-                document.getElementById('newNama').focus();
-            }, 100);
-        }
-        
-        // Tutup modal
-        function closeAddNasabahModal() {
-            document.getElementById('addNasabahModal').style.display = 'none';
-        }
-        
-        // Tambah nasabah baru
-        async function addNewNasabah() {
-            const nama = document.getElementById('newNama').value.trim();
-            const phone = document.getElementById('newPhone').value.trim();
-            const alamat = document.getElementById('newAlamat').value.trim();
-            
-            if (!nama) {
-                showAlert('❌ Nama tidak boleh kosong', 'error');
-                return;
-            }
-            
-            // Cek apakah sudah ada
-            const existing = nasabahList.find(n => 
-                n.nama.toLowerCase() === nama.toLowerCase()
-            );
-            
-            if (existing) {
-                showAlert('⚠️ Nasabah sudah terdaftar', 'warning');
-                closeAddNasabahModal();
-                return;
-            }
-            
-            const btn = document.querySelector('#addNasabahModal .btn-add');
-            const originalText = btn.textContent;
-            btn.innerHTML = '<span class="loading"></span> Menyimpan...';
-            btn.disabled = true;
+            // Show loading
+            document.getElementById('contentArea').innerHTML = `
+                <div style="text-align:center; padding:30px 20px; color:#999;">
+                    <div class="loading"></div>
+                    <div style="margin-top:15px;">Memuat ${tabName}...</div>
+                </div>
+            `;
             
             try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        action: 'addNasabah',
-                        nama: nama,
-                        phone: phone || '',
-                        alamat: alamat || ''
-                    })
-                });
-                
+                // Fetch UI from Apps Script
+                const response = await fetch(`${API_URL}?action=getUI&tab=${tabName}`);
                 const result = await response.json();
                 
                 if (result.status === 'success') {
-                    // Tambah ke list lokal
-                    const newNasabah = {
-                        id_nasabah: result.id_nasabah || '',
-                        nomor_urut: result.nomor_urut || nasabahList.length + 1,
-                        nama: nama,
-                        no_hp: phone || '',
-                        alamat: alamat || ''
-                    };
+                    document.getElementById('contentArea').innerHTML = result.html;
                     
-                    nasabahList.unshift(newNasabah);
-                    filteredNasabahList = [...nasabahList];
-                    
-                    // Update dropdowns
-                    populateDropdown('namaNasabah');
-                    populateDropdown('namaNasabahSaldo');
-                    
-                    // Update UI
-                    if (currentTab === 'nasabah') {
-                        loadNasabahList();
+                    // Load tab-specific JS
+                    if (result.js) {
+                        eval(result.js);
                     }
                     
-                    // Update stat
-                    document.getElementById('totalNasabah').textContent = nasabahList.length;
-                    
-                    // Reset dan tutup modal
-                    closeAddNasabahModal();
-                    
-                    showAlert(`✅ Nasabah "${nama}" berhasil ditambahkan!`, 'success');
+                    // Initialize with data
+                    if (result.data && window.initTab) {
+                        window.initTab(result.data);
+                    }
                 } else {
-                    showAlert(`❌ Gagal menambah nasabah: ${result.message}`, 'error');
-                }
-                
-            } catch (error) {
-                showAlert('❌ Gagal menyimpan. Cek koneksi internet.', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = originalText;
-            }
-        }
-        
-        // ==================== TRANSAKSI SYSTEM ====================
-        
-        // Toggle input tanggal berdasarkan jenis transaksi
-        function toggleTanggalInput() {
-            const jenis = document.getElementById('jenis').value;
-            const btn = document.getElementById('btnSimpan');
-            const btnText = document.getElementById('btnSimpanText');
-            
-            if (jenis === 'SETOR') {
-                document.getElementById('tanggalSetorGroup').style.display = 'block';
-                document.getElementById('tanggalTarikGroup').style.display = 'none';
-                btn.className = 'btn btn-setor';
-                btnText.innerHTML = '💳 SIMPAN SETORAN';
-            } else if (jenis === 'TARIK') {
-                document.getElementById('tanggalSetorGroup').style.display = 'none';
-                document.getElementById('tanggalTarikGroup').style.display = 'block';
-                btn.className = 'btn btn-tarik';
-                btnText.innerHTML = '💰 SIMPAN PENARIKAN';
-            } else {
-                document.getElementById('tanggalSetorGroup').style.display = 'none';
-                document.getElementById('tanggalTarikGroup').style.display = 'none';
-                btn.className = 'btn';
-                btnText.innerHTML = '📝 SIMPAN TRANSAKSI';
-            }
-        }
-        
-        // Simpan transaksi
-        async function simpanTransaksi() {
-            const dropdown = document.getElementById('namaNasabah');
-            const nama = dropdown.value;
-            const jenis = document.getElementById('jenis').value;
-            const nominal = getNumericValue(document.getElementById('nominal').value);
-            const keterangan = document.getElementById('keterangan').value.trim();
-            
-            // Validasi
-            if (!nama || nama === 'add_new') {
-                showAlert('❌ Harap pilih nasabah dari dropdown', 'error');
-                return;
-            }
-            
-            if (!jenis) {
-                showAlert('❌ Harap pilih jenis transaksi', 'error');
-                return;
-            }
-            
-            if (!nominal || nominal <= 0) {
-                showAlert('❌ Nominal harus lebih dari 0', 'error');
-                return;
-            }
-            
-            // Validasi tanggal
-            let tanggal_dari, tanggal_sampai, tanggal_tarik;
-            
-            if (jenis === 'SETOR') {
-                tanggal_dari = document.getElementById('tanggal_dari').value;
-                tanggal_sampai = document.getElementById('tanggal_sampai').value;
-                
-                if (!tanggal_dari || !tanggal_sampai) {
-                    showAlert('❌ Harap isi tanggal dari dan sampai', 'error');
-                    return;
-                }
-            } else if (jenis === 'TARIK') {
-                tanggal_tarik = document.getElementById('tanggal_tarik').value;
-                
-                if (!tanggal_tarik) {
-                    showAlert('❌ Harap isi tanggal penarikan', 'error');
-                    return;
-                }
-            }
-            
-            const btn = document.getElementById('btnSimpan');
-            const btnText = document.getElementById('btnSimpanText');
-            const originalText = btnText.textContent;
-            btnText.innerHTML = '<span class="loading"></span> Menyimpan...';
-            btn.disabled = true;
-            
-            try {
-                // Data transaksi
-                const data = {
-                    action: 'addTransaksi',
-                    nama: nama,
-                    jenis: jenis,
-                    nominal: nominal,
-                    keterangan: keterangan || '-'
-                };
-                
-                // Tambah tanggal sesuai jenis
-                if (jenis === 'SETOR') {
-                    data.tanggal_setor = `${tanggal_dari}|${tanggal_sampai}`;
-                } else {
-                    data.tanggal_tarik = tanggal_tarik;
-                }
-                
-                // Kirim ke Google Sheets
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(data)
-                });
-                
-                const result = await response.json();
-                
-                if (result.status === 'success') {
-                    showAlert(
-                        `✅ Transaksi berhasil disimpan!<br>
-                         <strong>${nama}</strong><br>
-                         ${jenis === 'SETOR' ? 'Setor' : 'Tarik'} - ${formatRupiah(nominal)}<br>
-                         Notifikasi Telegram terkirim`,
-                        'success'
-                    );
-                    
-                    resetForm();
-                    loadStats();
-                    
-                } else {
-                    showAlert(`❌ Gagal menyimpan: ${result.message}`, 'error');
-                }
-                
-            } catch (error) {
-                showAlert('❌ Gagal menyimpan. Cek koneksi internet.', 'error');
-            } finally {
-                btn.disabled = false;
-                btnText.innerHTML = originalText;
-            }
-        }
-        
-        // Reset form setelah simpan
-        function resetForm() {
-            const today = new Date().toISOString().split('T')[0];
-            
-            // Reset input
-            document.getElementById('nominal').value = '';
-            document.getElementById('keterangan').value = '';
-            
-            // Reset tanggal ke hari ini
-            document.getElementById('tanggal_dari').value = today;
-            document.getElementById('tanggal_sampai').value = today;
-            document.getElementById('tanggal_tarik').value = today;
-            
-            // Reset UI
-            document.getElementById('jenis').value = '';
-            document.getElementById('tanggalSetorGroup').style.display = 'none';
-            document.getElementById('tanggalTarikGroup').style.display = 'none';
-            document.getElementById('btnSimpan').className = 'btn';
-            document.getElementById('btnSimpanText').innerHTML = 'SIMPAN TRANSAKSI';
-        }
-        
-        // ==================== SALDO SYSTEM ====================
-        
-        // Load saldo saat dropdown nasabah berubah
-        function loadSaldoFromDropdown() {
-            const dropdown = document.getElementById('namaNasabahSaldo');
-            const selectedNasabah = dropdown.value;
-            
-            if (selectedNasabah && selectedNasabah !== 'add_new') {
-                loadSaldoDetail(selectedNasabah);
-            } else {
-                document.getElementById('noSaldoResult').style.display = 'block';
-                document.getElementById('saldoResult').style.display = 'none';
-            }
-        }
-        
-        // Load detail saldo
-        async function loadSaldoDetail(nama) {
-            try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getSaldo&nama=${encodeURIComponent(nama)}`);
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    displaySaldoResult(data.data);
-                } else {
-                    showAlert('❌ Gagal memuat saldo', 'error');
+                    showError('Gagal memuat konten');
                 }
             } catch (error) {
-                showAlert('❌ Gagal memuat saldo', 'error');
+                showError('Koneksi error. Coba refresh.');
             }
         }
         
-        // Tampilkan hasil saldo
-        function displaySaldoResult(data) {
-            document.getElementById('noSaldoResult').style.display = 'none';
-            const saldoResult = document.getElementById('saldoResult');
-            saldoResult.classList.remove('hidden');
-            
-            document.getElementById('saldoNama').textContent = data.nama;
-            document.getElementById('totalSetor').textContent = formatRupiah(data.total_setor);
-            document.getElementById('totalTarik').textContent = formatRupiah(data.total_tarik);
-            
-            const saldoAkhir = document.getElementById('saldoAkhir');
-            saldoAkhir.textContent = formatRupiah(data.saldo_akhir);
-            saldoAkhir.style.color = data.saldo_akhir >= 0 ? '#27ae60' : '#e74c3c';
-            
-            document.getElementById('lastUpdateSaldo').textContent = data.update_terakhir || '-';
+        // UTILITY FUNCTIONS
+        function showError(msg) {
+            document.getElementById('contentArea').innerHTML = `
+                <div style="background:#f8d7da; color:#721c24; padding:15px; border-radius:8px; text-align:center;">
+                    ❌ ${msg}
+                    <button onclick="loadTab(currentTab)" style="margin-top:10px; padding:8px 15px; background:#667eea; color:white; border:none; border-radius:5px;">
+                        Coba Lagi
+                    </button>
+                </div>
+            `;
         }
         
-        // Refresh saldo detail
-        function refreshSaldoDetail() {
-            const dropdown = document.getElementById('namaNasabahSaldo');
-            const selectedNasabah = dropdown.value;
-            
-            if (selectedNasabah && selectedNasabah !== 'add_new') {
-                loadSaldoDetail(selectedNasabah);
-                showAlert('Memperbarui saldo...', 'info');
-            }
+        function formatRupiah(num) {
+            return 'Rp ' + parseInt(num).toLocaleString('id-ID');
         }
         
-        // ==================== EVENT LISTENERS ====================
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
-            const modal = document.getElementById('addNasabahModal');
-            if (e.target === modal) {
-                closeAddNasabahModal();
-            }
+        // INITIALIZE
+        window.addEventListener('load', () => {
+            updateStatus();
+            window.addEventListener('online', updateStatus);
+            window.addEventListener('offline', updateStatus);
+            loadTab('transaksi');
         });
         
-        // Escape key to close modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAddNasabahModal();
-            }
-        });
-        
-        // Auto-refresh when page becomes visible
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                setTimeout(loadNasabahForDropdown, 1000);
-                setTimeout(loadStats, 2000);
-            }
-        });
-        
-        // ==================== PWA SERVICE WORKER ====================
+        // SERVICE WORKER
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('✅ Service Worker registered:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('❌ Service Worker registration failed:', error);
-                    });
-            });
+            navigator.serviceWorker.register('service-worker.js');
         }
-        
-        // ==================== PWA INSTALL PROMPT ====================
-        let deferredPrompt;
-        
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Show install button after 3 seconds
-            setTimeout(() => {
-                const installBtn = document.createElement('button');
-                installBtn.innerHTML = '📱 INSTALL APP';
-                installBtn.style.cssText = `
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    border: none;
-                    padding: 12px 20px;
-                    border-radius: 25px;
-                    font-size: 14px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-                    z-index: 9999;
-                    animation: pulse 2s infinite;
-                `;
-                
-                installBtn.onclick = () => {
-                    installBtn.style.display = 'none';
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then((choiceResult) => {
-                        if (choiceResult.outcome === 'accepted') {
-                            showAlert('✅ Aplikasi berhasil diinstall!', 'success');
-                        }
-                        deferredPrompt = null;
-                    });
-                };
-                
-                document.body.appendChild(installBtn);
-                
-                // Auto hide after 15 seconds
-                setTimeout(() => {
-                    if (installBtn.parentNode) {
-                        installBtn.style.display = 'none';
-                    }
-                }, 15000);
-            }, 3000);
-        });
-        
-        // ==================== OFFLINE DETECTION ====================
-        window.addEventListener('online', () => {
-            showAlert('📶 Koneksi internet pulih!', 'success');
-        });
-        
-        window.addEventListener('offline', () => {
-            showAlert('⚠️ Anda sedang offline. Data tersimpan lokal.', 'warning');
-        });
-        
-        console.log('✅ Sistem Jimpitan Digital REVO Ready!');
     </script>
 </body>
 </html>
